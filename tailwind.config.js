@@ -5,15 +5,13 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
-    fontFamily: {
-      kufiM: ["Reem Kufi Fun", "sans-serif"],
-      nablaPixel: ["Nabla", "cursive"],
-      strongItalik: ["Ms Madi", "cursive"],
-      lobster: ["Lobster", "cursive"],
+    extend: {
+      colors: {
+        primary: "#13003f",
+      },
     },
-    colors: {
-      primary: "##13003f",
+    fontFamily: {
+      primary: ["Nunito", "sans-serif"],
     },
   },
   plugins: [],

@@ -10,7 +10,8 @@ const Home: NextPage = (): JSX.Element => {
   const [state, setState] = useRecoilState(testState);
   return (
     <div className="p-12">
-      <div className=" h-96 w-96 rounded-lg bg-black">
+      <div className=" h-96 w-96 rounded-lg bg-primary superflex">
+        <div className=" w-32 h-32 rounded-lg grad">sdvsdvdsv</div>
 
       </div>
     </div>
