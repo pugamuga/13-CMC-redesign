@@ -12,6 +12,9 @@ module.exports = {
       strongItalik: ["Ms Madi", "cursive"],
       lobster: ["Lobster", "cursive"],
     },
+    colors: {
+      primary: "##13003f",
+    },
   },
   plugins: [],
 };
