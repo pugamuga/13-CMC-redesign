@@ -35,12 +35,15 @@
     @apply transition-all duration-700;
   }
   .grad {
-    @apply bg-gradient-to-br from-[#6458de] to-[#c24efe];
+    @apply bg-gradient-to-br from-[#6458de]/100 to-[#c24efe]/100;
   }
-  .icon-sm{
-    @apply text-xl cursor-pointer tr-300 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex
+  .btnStyleOne {
+    @apply bg-[#6558de]/10  p-2 rounded-xl w-full cursor-pointer hover:bg-[#6558de] flex items-center justify-between gap-x-4 hover:text-white text-white/40 tr-300;
   }
-  .icon-big{
-    @apply text-2xl cursor-pointer tr-300 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex
+  .icon-sm {
+    @apply text-xl cursor-pointer tr-100 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex;
+  }
+  .icon-big {
+    @apply text-2xl cursor-pointer tr-100 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex;
   }
 }
