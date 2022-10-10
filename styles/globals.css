@@ -16,7 +16,7 @@
   }
 
   body {
-    @apply text-white font-primary font-medium;
+    @apply text-white font-primary font-medium cursor-default;
   }
 
   .superflex {
@@ -36,5 +36,11 @@
   }
   .grad {
     @apply bg-gradient-to-br from-[#6458de] to-[#c24efe];
+  }
+  .icon-sm{
+    @apply text-xl cursor-pointer tr-300 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex
+  }
+  .icon-big{
+    @apply text-2xl cursor-pointer tr-300 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex
   }
 }

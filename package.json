@@ -6,10 +6,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "framer-motion": "^7.3.6",
+    "framer-motion": "^7.5.3",
     "next": "latest",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-icons": "^4.4.0",
     "recoil": "^0.7.5"
   },
   "devDependencies": {
