@@ -40,8 +40,11 @@
   .grad-50 {
     @apply bg-gradient-to-br from-[#6458de]/20 to-[#c24efe]/10;
   }
+  .grad-150 {
+    @apply bg-gradient-to-br from-[#6458de]/30 to-[#c24efe]/30;
+  }
   .btnStyleOne {
-    @apply bg-[#6558de]/10  p-2 rounded-xl w-full cursor-pointer hover:bg-[#6558de] flex items-center px-4 justify-between gap-x-4 hover:text-white text-white/40 tr-300;
+    @apply grad-150 p-2 rounded-xl w-full cursor-pointer hover:bg-[#6558de] flex items-center px-4 justify-between gap-x-4 hover:text-white text-white/40 tr-300;
   }
   .icon-sm {
     @apply text-xl cursor-pointer tr-100 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex;
