@@ -16,7 +16,7 @@ export default function Header(): JSX.Element {
   const [openMenu, setOpenMenu] = useRecoilState(burgerMenuState);
 
   return (
-    <div className=" w-screen h-[60px]  px-4 md:px-4 md:pr-12 flex items-center justify-between">
+    <div className=" w-screen h-[60px]   md:px-4 md:pr-12 flex items-center px-4 justify-between">
       <AnimatePresence>
         {showInputHeader && (
           <SearchHeader
@@ -41,7 +41,7 @@ export default function Header(): JSX.Element {
           )}
         </AnimatePresence>
         {/* ------------------------ */}
-        <div className=" inline md:hidden mr-2">
+        <div className=" inline md:hidden">
           <MobileSideBar />
         </div>
         <div className="  flex items-center">

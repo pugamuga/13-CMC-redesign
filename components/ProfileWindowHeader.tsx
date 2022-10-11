@@ -28,7 +28,7 @@ export default function ProfileWindowHeader({
           transition={{ easy: "easeOut" }}
           className="flex justify-between text-white font-bold flex-col items-end absolute bg-[#6558de]/10 space-y-4
         backdrop-blur-md  right-0 top-[50px] rounded-lg origin-top
-        md:origin-top-right shadow-lg p-4 w-[90%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20"
+        md:origin-top-right drop-shadow-lg p-4 w-[92%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20"
         >
           <div className=" flex items-center space-x-4 w-full">
             <div className="w-12 h-12 grad rounded-2xl superflex">U</div>
