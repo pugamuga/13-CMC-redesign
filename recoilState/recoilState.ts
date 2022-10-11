@@ -10,7 +10,7 @@ export const userHeightState = atom<number>({
   default: 0,
 });
 
-export const pages:PageProps[] = [
+export const pages: PageProps[] = [
   { name: "Overview", link: "/" },
   { name: "Portfolio", link: "/portfolio" },
   { name: "Watch List", link: "/watchlist" },
@@ -18,11 +18,15 @@ export const pages:PageProps[] = [
 ];
 
 export interface PageProps {
-    name: string;
-    link: string;
-  }
+  name: string;
+  link: string;
+}
 
 export const pageState = atom<any>({
   key: "pageState",
   default: pages[0],
+});
+export const coinDataState = atom<MainCoinData[]|[]>({
+  key: "coinDataState",
+  default: [],
 });
