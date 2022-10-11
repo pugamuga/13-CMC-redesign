@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 import { burgerMenuState } from "../recoilState/recoilState";
 import ProfileWindowHeader from "./ProfileWindowHeader";
 import ToggleDarkMode from "./ToggleDarkMode";
+import MobileSideBar from "./MobileSideBar";
 
 export default function Header(): JSX.Element {
   const [showInputHeader, setShowInputHeader] = useState<boolean>(false);
@@ -28,6 +29,7 @@ export default function Header(): JSX.Element {
       <div className=" flex items-center space-x-2  select-none">
         <Image src={"/assets/banner.gif"} height={44} width={44} />
       </div>
+
       <div className=" space-x-2 flex md:space-x-4 items-center">
         {/* ------------------------ */}
         <AnimatePresence>
@@ -39,6 +41,9 @@ export default function Header(): JSX.Element {
           )}
         </AnimatePresence>
         {/* ------------------------ */}
+        <div className=" inline md:hidden mr-2">
+          <MobileSideBar />
+        </div>
         <div className="  flex items-center">
           <ToggleDarkMode />
         </div>

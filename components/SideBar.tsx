@@ -20,7 +20,7 @@ export default function SideBar(): JSX.Element {
     <div className=" fixed left-0 top-5 h-[50%] w-[75px] bottom-0 my-auto md:flex  flex-col items-center justify-between text-xs hidden ">
       {Icons.map((item: ObjProps, id: number) => {
         return (
-          <div className=" flex flex-col items-center space-y-2">
+          <div className=" flex flex-col items-center space-y-2" key={id}>
             {item.icon === "BiGridAlt"&& <BiGridAlt className="text-2xl text-white " />}
             {item.icon === "BiCoinStack"&& <BiCoinStack className="text-2xl text-primaryLight/50" />}
             {item.icon === "BsStars"&& <BsStars className="text-2xl text-primaryLight/50" />}

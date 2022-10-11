@@ -16,7 +16,7 @@
   }
 
   body {
-    @apply text-white font-primary font-medium cursor-default bg-gradient-to-br from-primary to-purple-900 h-screen ;
+    @apply text-white font-primary font-medium cursor-default bg-gradient-to-br from-primary to-purple-900 h-screen  ;
   }
 
   .superflex {
@@ -47,6 +47,9 @@
     @apply text-2xl cursor-pointer tr-100 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex;
   }
   .bodyPart {
+    @apply  bg-black/60  backdrop-blur-md  rounded-md md:rounded-2xl flex  mx-4 mb-4 md:ml-[75px] p-4
+  }
+  .bodyPartDef {
     @apply  bg-black/60  backdrop-blur-md w-[96vw] md:w-[94vw] md:h-[89vh] h-[92vh] rounded-md md:rounded-2xl fixed md:right-2 md:bottom-2 bottom-2 right-0 left-0 mx-auto md:mx-0 md:left-auto
   }
 }

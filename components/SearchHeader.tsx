@@ -22,7 +22,7 @@ export default function SearchHeader({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
       id="input-blur"
-      className=" absolute h-screen w-screen z-10 backdrop-blur-sm top-0 left-0 bg-primary/10 flex justify-center"
+      className=" absolute h-screen w-screen z-50 backdrop-blur-sm top-0 left-0 bg-primary/10 flex justify-center"
     >
       <motion.div
         id="blur-div"

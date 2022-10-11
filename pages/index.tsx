@@ -1,11 +1,10 @@
 import type { NextPage } from "next";
-import Body from "../components/Body";
 
 const Home: NextPage = (): JSX.Element => {
   return (
-    <>
-      <Body />
-    </>
+    <div className=" flex items-center h-12 bg-slate-300">
+      Overview
+    </div>
   );
 };
 
