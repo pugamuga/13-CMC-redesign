@@ -14,7 +14,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       <div className=" flex items-center space-x-3 w-[30%] ">
         {likeCoin ? <AiFillStar /> : <AiOutlineStar />}
         <p className="w-[10%] text-sm text-center">{coin.market_cap_rank}</p>
-        <div className="mx-2 superflex h-6 w-6 relative rounded-full">
+        <div className="mx-2 superflex h-6 w-6 relative rounded-full shadow-md shadow-primary">
           <Image src={coin.image} layout="fill" />
         </div>
         <p className="text-sm">{coin.name}</p>
