@@ -17,7 +17,7 @@ const Icons: ObjProps[] = [
 
 export default function SideBar(): JSX.Element {
   return (
-    <div className=" fixed left-0 top-5 h-[50%] w-[75px] bottom-0 my-auto flex  flex-col items-center justify-between text-xs">
+    <div className=" fixed left-0 top-5 h-[50%] w-[75px] bottom-0 my-auto md:flex  flex-col items-center justify-between text-xs hidden ">
       {Icons.map((item: ObjProps, id: number) => {
         return (
           <div className=" flex flex-col items-center space-y-2">

@@ -35,18 +35,15 @@ export default function ProfileWindowHeader({
             <p className="truncate w-44">User Najhbhjbjkbdasdsad</p>
           </div>
           <div className=" btnStyleOne">
-            <MdAccountCircle />
             <p className="text-white">Account</p>
             <MdAccountCircle />
           </div>
           <div className=" btnStyleOne ">
-            <IoMdSettings />
             <p className=" text-white">Settings</p>
             <IoMdSettings />
           </div>
 
           <div className=" btnStyleOne">
-            <BiPowerOff />
             <p className="text-white">Log out</p>
             <BiPowerOff />
           </div>

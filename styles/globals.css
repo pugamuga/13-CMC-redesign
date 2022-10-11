@@ -16,7 +16,7 @@
   }
 
   body {
-    @apply text-white font-primary font-medium cursor-default bg-gradient-to-br from-primary to-purple-900 ;
+    @apply text-white font-primary font-medium cursor-default bg-gradient-to-br from-primary to-purple-900 h-screen ;
   }
 
   .superflex {
@@ -38,12 +38,15 @@
     @apply bg-gradient-to-br from-[#6458de]/100 to-[#c24efe]/100;
   }
   .btnStyleOne {
-    @apply bg-[#6558de]/10  p-2 rounded-xl w-full cursor-pointer hover:bg-[#6558de] flex items-center justify-between gap-x-4 hover:text-white text-white/40 tr-300;
+    @apply bg-[#6558de]/10  p-2 rounded-xl w-full cursor-pointer hover:bg-[#6558de] flex items-center px-4 justify-between gap-x-4 hover:text-white text-white/40 tr-300;
   }
   .icon-sm {
     @apply text-xl cursor-pointer tr-100 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex;
   }
   .icon-big {
     @apply text-2xl cursor-pointer tr-100 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex;
+  }
+  .bodyPart {
+    @apply  bg-black/60  backdrop-blur-md w-[96vw] md:w-[94vw] md:h-[89vh] h-[92vh] rounded-md md:rounded-2xl fixed md:right-2 md:bottom-2 bottom-2 right-0 left-0 mx-auto md:mx-0 md:left-auto
   }
 }
