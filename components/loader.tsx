@@ -32,10 +32,16 @@ display: block;
 //     0% { transform: rotate(0deg); }
 //     100% { transform: rotate(360deg); }
 //   }
-    #globalDiv{
-    width: 120px;
-        height: 120px;
-        background:#fff
+   #globalDiv{
+    width: 50px;
+        height: 50px;
+       
+
+}
+#globalDiv img:nth-child(1) {
+    width: 50px;
+        height: 50px;
+        
 
 }
 

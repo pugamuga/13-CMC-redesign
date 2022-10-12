@@ -26,7 +26,9 @@ class MyDocument extends Document {
 
         <body>
           <div id={"globalLoader"}>
-            <div id={"globalDiv"}></div>
+            <div id={"globalDiv"}>
+              <img src="/assets/banner.gif"/>
+            </div>
             <div />
           </div>
           <Main />
