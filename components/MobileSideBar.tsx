@@ -9,7 +9,9 @@ import { TbSwords } from "react-icons/tb";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { pageState } from "../recoilState/recoilState";
-import {pages} from "../recoilState/recoilState";
+import { pages } from "../recoilState/recoilState";
+import Router from "next/router";
+import nProgress from "nprogress"
 
 interface PageProps {
   name: string;
@@ -19,9 +21,19 @@ interface PageProps {
 export default function MobileSideBar() {
   const [selected, setSelected] = useRecoilState(pageState);
   const router = useRouter();
+  nProgress.configure({showSpinner:false})
 
   useEffect(() => {
     router.push(selected.link);
+    Router.events.on("routeChangeStart", (url) => {
+      console.log(url);
+      if (url === "/") {
+        nProgress.start();
+      }
+    });
+    Router.events.on("routeChangeComplete", () => {
+      nProgress.done();
+    });
   }, [selected]);
 
   return (
@@ -30,9 +42,15 @@ export default function MobileSideBar() {
         <div className="relative mt-1">
           <Listbox.Button className="relative w-[140px] cursor-default rounded-lg bg-white/10 drop-shadow-md py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ">
             <div className="flex items-center space-x-2">
-              {selected.name === "Overview" && <BiGridAlt className="text-base" />}
-              {selected.name === "Portfolio" && <BiCoinStack className="text-base" />}
-              {selected.name === "Watch List" && <BsStars className="text-base" />}
+              {selected.name === "Overview" && (
+                <BiGridAlt className="text-base" />
+              )}
+              {selected.name === "Portfolio" && (
+                <BiCoinStack className="text-base" />
+              )}
+              {selected.name === "Watch List" && (
+                <BsStars className="text-base" />
+              )}
               {selected.name === "Battle" && <TbSwords className="text-base" />}
               <span className="block truncate mt-[1px]">{selected.name}</span>
             </div>
@@ -50,7 +68,7 @@ export default function MobileSideBar() {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white/10 backdrop-blur-md py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {pages.map((page:PageProps, personIdx:number) => (
+              {pages.map((page: PageProps, personIdx: number) => (
                 <Listbox.Option
                   key={personIdx}
                   className={({ active }) =>

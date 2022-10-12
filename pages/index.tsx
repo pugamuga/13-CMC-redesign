@@ -5,8 +5,6 @@ import { useRecoilState } from "recoil";
 import CoinString from "../components/CoinString";
 import { coinDataState } from "../recoilState/recoilState";
 
-// scrollbar-hide md:scrollbar-default md:scrollbar-thin md:scrollbar-thumb-violet-900 scroll-smooth
-// scrollbar-thumb-rounded-full
 
 interface IProps {
   data: MainCoinData[] | [];
@@ -27,7 +25,7 @@ const Home = ({ data }: IProps): JSX.Element => {
     <div className="w-full">
       <div className=" flex flex-col w-full space-y-2 items-center h-12 ">
         {coins.slice(0, 20).map((coin: MainCoinData, id: number) => {
-          return <CoinString coin={coin} />;
+          return <CoinString key={id} coin={coin} />;
         })}
       </div>
     </div>

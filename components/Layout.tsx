@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
+import Head from "next/head";
 import SideBar from "./SideBar";
+import PagePreloader from "./PagePreloader";
 
 interface IProps {
   children: JSX.Element;
@@ -24,12 +26,16 @@ export default function Layout({ children }: IProps): JSX.Element {
   useEffect(() => {}, [userHeight]);
   return (
     <>
+      <Head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
+        />
+      </Head>
+      <PagePreloader/>
       <Header />
       <SideBar />
-      <div
-        style={{ height: `${userHeight - 76}px` }}
-        className="bodyPart "
-      >
+      <div style={{ height: `${userHeight - 76}px` }} className="bodyPart ">
         {children}
       </div>
     </>
