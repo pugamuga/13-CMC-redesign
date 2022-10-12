@@ -23,22 +23,22 @@ const Home = ({ data }: IProps): JSX.Element => {
 
   return (
     <div className="w-full">
-      {/* <div className=" flex flex-col w-full space-y-2 items-center h-12 ">
+      <div className=" flex flex-col w-full space-y-2 items-center h-12 ">
         {coins.slice(0, 20).map((coin: MainCoinData, id: number) => {
           return <CoinString key={id} coin={coin} />;
         })}
-      </div> */}
+      </div>
     </div>
   );
 };
 
 export default Home;
 
-// export const getServerSideProps = async () => {
-//   const responce = await axios.get(coinGeckoUrl);
-//   return {
-//     props: {
-//       data: responce.data,
-//     },
-//   };
-// };
+export const getServerSideProps = async () => {
+  const responce = await axios.get(coinGeckoUrl);
+  return {
+    props: {
+      data: responce.data,
+    },
+  };
+};

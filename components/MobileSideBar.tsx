@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil";
 import { pageState } from "../recoilState/recoilState";
 import { pages } from "../recoilState/recoilState";
 import Router from "next/router";
-import nProgress from "nprogress"
+import nProgress from "nprogress";
 
 interface PageProps {
   name: string;
@@ -21,15 +21,12 @@ interface PageProps {
 export default function MobileSideBar() {
   const [selected, setSelected] = useRecoilState(pageState);
   const router = useRouter();
-  nProgress.configure({showSpinner:false})
+  nProgress.configure({ showSpinner: false });
 
   useEffect(() => {
     router.push(selected.link);
-    Router.events.on("routeChangeStart", (url) => {
-      console.log(url);
-      if (url === "/") {
-        nProgress.start();
-      }
+    Router.events.on("routeChangeStart", () => {
+      nProgress.start();
     });
     Router.events.on("routeChangeComplete", () => {
       nProgress.done();
