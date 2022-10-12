@@ -31,7 +31,7 @@ export default function ProfileWindowHeader({
           transition={{ easy: "easeOut" }}
           className="flex justify-between text-white font-bold flex-col items-end absolute bg-[#6558de]/10 space-y-4
         backdrop-blur-md  right-0 top-[50px] rounded-lg origin-top
-        md:origin-top-right  p-4 w-[92%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20 min-w-[300px] ring-1 ring-white"
+        md:origin-top-right  p-4 w-[92%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20 min-w-[300px] "
         >
           {isLogin ? (
             <>

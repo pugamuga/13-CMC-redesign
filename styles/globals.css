@@ -59,7 +59,7 @@
     @apply bg-black/60  backdrop-blur-md w-[96vw] md:w-[94vw] md:h-[89vh] h-[92vh] rounded-md md:rounded-2xl fixed md:right-2 md:bottom-2 bottom-2 right-0 left-0 mx-auto md:mx-0 md:left-auto;
   }
   .inputLogin {
-    @apply rounded-lg w-full bg-transparent ring-1 ring-white/10 px-4 py-2;
+    @apply rounded-lg w-full bg-transparent ring-1 ring-white/10 px-4 py-2 outline-none
   }
 }
 
