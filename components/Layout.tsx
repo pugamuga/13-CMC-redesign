@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Header from "./Header";
 import Head from "next/head";
 import SideBar from "./SideBar";
-import PagePreloader from "./PagePreloader";
 
 interface IProps {
   children: JSX.Element;
@@ -10,6 +9,8 @@ interface IProps {
 
 export default function Layout({ children }: IProps): JSX.Element {
   const [userHeight, setuserHeight] = useState<number>(0);
+
+ 
 
   useEffect(() => {
     const resizeHandler = () => {
@@ -32,7 +33,6 @@ export default function Layout({ children }: IProps): JSX.Element {
           href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
         />
       </Head>
-      <PagePreloader/>
       <Header />
       <SideBar />
       <div style={{ height: `${userHeight - 76}px` }} className="bodyPart ">

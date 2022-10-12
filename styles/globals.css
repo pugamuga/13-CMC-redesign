@@ -16,7 +16,7 @@
   }
 
   body {
-    @apply text-white font-primary font-medium cursor-default bg-gradient-to-br from-primary to-purple-900 h-screen 
+    @apply text-white  font-primary font-medium cursor-default bg-gradient-to-br from-primary to-purple-900 h-screen 
   }
 
   .superflex {
