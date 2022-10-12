@@ -18,7 +18,7 @@ const Home = ({ data }: IProps): JSX.Element => {
 
   useEffect(() => {
     setCoins(data);
-    console.log(data);
+    
   }, []);
 
   return (
