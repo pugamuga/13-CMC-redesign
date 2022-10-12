@@ -9,17 +9,16 @@ interface IProps {
 export default function Layout({ children }: IProps): JSX.Element {
   const [userHeight, setuserHeight] = useState<number>(0);
 
-
   useEffect(() => {
     const resizeHandler = () => {
-        setuserHeight(window.innerHeight);
+      setuserHeight(window.innerHeight);
     };
     setuserHeight(window.innerHeight);
-    window.addEventListener("resize",resizeHandler);
+    window.addEventListener("resize", resizeHandler);
 
-    return ()=>{
-      window.removeEventListener("resize",resizeHandler);
-    }
+    return () => {
+      window.removeEventListener("resize", resizeHandler);
+    };
   }, []);
 
   useEffect(() => {}, [userHeight]);
@@ -27,7 +26,10 @@ export default function Layout({ children }: IProps): JSX.Element {
     <>
       <Header />
       <SideBar />
-      <div style={{ height: `${userHeight-76}px` }} className="bodyPart">
+      <div
+        style={{ height: `${userHeight - 76}px` }}
+        className="bodyPart "
+      >
         {children}
       </div>
     </>

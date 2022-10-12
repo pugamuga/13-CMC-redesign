@@ -16,7 +16,7 @@
   }
 
   body {
-    @apply text-white font-primary font-medium cursor-default bg-gradient-to-br from-primary to-purple-900 h-screen  ;
+    @apply text-white font-primary font-medium cursor-default bg-gradient-to-br from-primary to-purple-900 h-screen 
   }
 
   .superflex {
@@ -53,12 +53,28 @@
     @apply text-2xl cursor-pointer tr-100 text-[#b68fcc] hover:text-white rounded-md border-2 h-8 w-8 border-white/10 bg-transparent hover:grad hover:border-none superflex;
   }
   .bodyPart {
-    @apply  bg-black/60  backdrop-blur-md  rounded-md md:rounded-2xl flex  mx-4 mb-4 md:ml-[75px] p-4 overflow-x-hidden overflow-y-scroll
+    @apply bg-black/60  backdrop-blur-md  rounded-md md:rounded-2xl flex  mx-4 mb-4 md:ml-[75px] p-4 overflow-x-hidden overflow-y-auto scrollbar-hide md:scrollbar-default 
   }
   .bodyPartDef {
-    @apply  bg-black/60  backdrop-blur-md w-[96vw] md:w-[94vw] md:h-[89vh] h-[92vh] rounded-md md:rounded-2xl fixed md:right-2 md:bottom-2 bottom-2 right-0 left-0 mx-auto md:mx-0 md:left-auto
+    @apply bg-black/60  backdrop-blur-md w-[96vw] md:w-[94vw] md:h-[89vh] h-[92vh] rounded-md md:rounded-2xl fixed md:right-2 md:bottom-2 bottom-2 right-0 left-0 mx-auto md:mx-0 md:left-auto;
   }
-  .inputLogin{
-    @apply rounded-lg w-full bg-transparent ring-1 ring-white/10 px-4 py-2 
+  .inputLogin {
+    @apply rounded-lg w-full bg-transparent ring-1 ring-white/10 px-4 py-2;
   }
+}
+
+::-webkit-scrollbar{
+  width: 10px;
+}
+::-webkit-scrollbar-track{
+  border-radius: 30px;
+  margin-block: 20px;
+}
+::-webkit-scrollbar-thumb{
+  background: rgba(101,88,222,.3);
+  border-radius: 30px;
+}
+::-webkit-scrollbar-thumb:hover{
+  background: rgba(101,88,222,.5);
+  border-radius: 30px;
 }
