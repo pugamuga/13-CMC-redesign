@@ -15,7 +15,6 @@ export default function CoinString({ coin }: IProps): JSX.Element {
     coin.sparkline_in_7d.price[coin.sparkline_in_7d.price.length - 1]
       ? "#67dfbd"
       : "#ff7171";
-  console.log(sparklineColor);
 
   return (
     <div className=" w-full grad-50 py-2 px-2 md:px-4 rounded-md flex items-center">
