@@ -3,7 +3,7 @@ import { BsChevronRight } from "react-icons/bs";
 
 export default function MobileSlider(): JSX.Element {
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative ">
       <div
         className={`${
           !true ? "opacity-100" : "opacity-0"
@@ -12,7 +12,11 @@ export default function MobileSlider(): JSX.Element {
       >
         <BsChevronRight className=" text-white stroke-2 text-xs rotate-180 mr-1" />
       </div>
-      <SlideTop name={"Top Gainers"} type={"like"}/>
+      <div className=" min-w-[315%] space-x-5 h-full overflow-x-scroll scrollbar-hide flex ">
+        <SlideTop name={"Top Gainers"} type={"like"} />
+        <SlideTop name={"Top Losers"} type={"dislike"} />
+        <SlideTop name={"Favorites"} type={"favorite"} />
+      </div>
       <div
         className={`${
           true ? "opacity-100" : "opacity-0"

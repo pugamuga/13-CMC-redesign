@@ -81,7 +81,7 @@ const Home = ({ data }: IProps): JSX.Element => {
                 setCurrentPage(btn);
               }}
               key={btn}
-              className="w-6 h-6 md:h-10 md:w-10 grad-150 hover:grad tr-300 superflex rounded-md shadow-md cursor-pointer text-sm"
+              className={`w-6 h-6 md:h-10 md:w-10 ${btn===currentPage?"grad":"grad-150"} hover:grad tr-300 superflex rounded-md shadow-md cursor-pointer text-sm`}
             >
               {btn}
             </div>
