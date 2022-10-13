@@ -18,6 +18,8 @@ const coinGeckoUrl =
 const Home = ({ data }: IProps): JSX.Element => {
   const [coins, setCoins] = useRecoilState(coinDataState);
   const [currentTime, setCurrentTime] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [amountPagesShown, setAmountPagesShown] = useState(10);
 
   const lastTimeUpdatePrice: string =
     coins[0] && Array.from(coins[1]?.last_updated).slice(11, 19).join("");
@@ -43,7 +45,7 @@ const Home = ({ data }: IProps): JSX.Element => {
           <MobileSlider />
         </div>
       </div>
-      <div className=" flex w-full justify-end md:px-4 px-0 mt-12">
+      <div className=" flex w-full justify-center md:justify-end md:px-4 px-0 mt-12 pb-1">
         {
           <>
             <p className=" text-xs md:text-sm text-white/30">
@@ -55,9 +57,29 @@ const Home = ({ data }: IProps): JSX.Element => {
           </>
         }
       </div>
-      <div className=" flex flex-col w-full space-y-2 items-center h-12 ">
-        {coins.slice(0, 20).map((coin: MainCoinData, id: number) => {
-          return <CoinString key={id} coin={coin} />;
+      <div className=" flex flex-col w-full space-y-2 items-center  ">
+        {coins
+          .slice(
+            currentPage * amountPagesShown - amountPagesShown,
+            currentPage * amountPagesShown
+          )
+          .map((coin: MainCoinData, id: number) => {
+            return <CoinString key={id} coin={coin} />;
+          })}
+      </div>
+      <div className=" py-4 flex space-x-2">
+        {Array.from({ length: 10 }, (_, i) => i + 1).map((btn: number) => {
+          return (
+            <div
+              onClick={() => {
+                setCurrentPage(btn);
+              }}
+              key={btn}
+              className="w-6 h-6 md:h-10 md:w-10 grad-150 hover:grad tr-300 superflex rounded-md shadow-md cursor-pointer text-sm"
+            >
+              {btn}
+            </div>
+          );
         })}
       </div>
     </div>
@@ -67,10 +89,10 @@ const Home = ({ data }: IProps): JSX.Element => {
 export default Home;
 
 export const getServerSideProps = async () => {
-  const responce = await axios.get(coinGeckoUrl);
+  const responce = await axios.get(coinGeckoUrl).catch((e) => console.log(e));
   return {
     props: {
-      data: responce.data,
+      data: responce?.data,
     },
   };
 };

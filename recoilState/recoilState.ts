@@ -26,7 +26,11 @@ export const pageState = atom<any>({
   key: "pageState",
   default: pages[0],
 });
-export const coinDataState = atom<MainCoinData[]|[]>({
+
+export const coinDataState = atom<MainCoinData[] | []>({
   key: "coinDataState",
   default: [],
 });
+
+
+
