@@ -5,6 +5,8 @@ import { useRecoilState } from "recoil";
 import CoinString from "../components/CoinString";
 import { coinDataState } from "../recoilState/recoilState";
 import moment from "moment";
+import MobileSlider from "../components/MobileSlider";
+import DesktopSlider from "../components/DesktopSlider";
 
 interface IProps {
   data: MainCoinData[] | [];
@@ -20,13 +22,12 @@ const Home = ({ data }: IProps): JSX.Element => {
   const lastTimeUpdatePrice: string =
     coins[0] && Array.from(coins[1]?.last_updated).slice(11, 19).join("");
 
-    useEffect(() => {
-      setTimeout(()=>{
-        const now = moment().subtract(3,"hour").format('hh:mm:ss');
-        setCurrentTime(now)
-      },1000)
-
-    }, [currentTime]);
+  useEffect(() => {
+    setTimeout(() => {
+      const now = moment().subtract(3, "hour").format("hh:mm:ss");
+      setCurrentTime(now);
+    }, 1000);
+  }, [currentTime]);
 
   useEffect(() => {
     setCoins(data);
@@ -34,20 +35,12 @@ const Home = ({ data }: IProps): JSX.Element => {
 
   return (
     <div className="w-full relative">
-      <div className="  md:h-[300px] h-[200px] flex overflow-x-scroll scrollbar-hide ">
-        <div
-          className=" md:flex flex-row md:grid-rows-3 md:justify-between w-full  h-full"
-          id="top"
-        >
-          <div className=" grad-150 w-full md:w-[32.5%] h-full rounded-lg">
-            <p>Top Gainers</p>
-          </div>
-          <div className=" grad-150 w-full md:w-[32.5%] h-full rounded-lg">
-          <p>Top Losers</p>
-          </div>
-          <div className=" grad-150 w-full md:w-[32.5%] h-full rounded-lg">
-            <p>Favorite</p>
-          </div>
+      <div className="  md:h-[300px] h-[200px]  w-full">
+        <div className=" hidden md:inline">
+          <DesktopSlider />
+        </div>
+        <div className=" inline md:hidden">
+          <MobileSlider />
         </div>
       </div>
       <div className=" flex w-full justify-end md:px-4 px-0 mt-12">
@@ -56,7 +49,9 @@ const Home = ({ data }: IProps): JSX.Element => {
             <p className=" text-xs md:text-sm text-white/30">
               Last price update: {lastTimeUpdatePrice} UTC
             </p>
-            <p className=" text-xs md:text-sm text-white/30 ">/ Current UTC {currentTime}</p>
+            <p className=" text-xs md:text-sm text-white/30 ">
+              / Current UTC {currentTime}
+            </p>
           </>
         }
       </div>
