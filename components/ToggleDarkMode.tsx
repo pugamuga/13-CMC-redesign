@@ -3,7 +3,7 @@ import { Switch } from "@headlessui/react";
 import { FaMoon } from "react-icons/fa";
 
 function ToggleDarkMode() {
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(true);
 
   return (
     <Switch
