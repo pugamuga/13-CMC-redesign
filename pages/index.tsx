@@ -7,6 +7,7 @@ import { coinDataState } from "../recoilState/recoilState";
 import moment from "moment";
 import MobileSlider from "../components/MobileSlider";
 import DesktopSlider from "../components/DesktopSlider";
+import PagesAmountAtTime from "../components/PagesAmountAtTime";
 
 interface IProps {
   data: MainCoinData[] | [];
@@ -45,15 +46,20 @@ const Home = ({ data }: IProps): JSX.Element => {
           <MobileSlider />
         </div>
       </div>
-      <div className=" flex w-full justify-center md:justify-end md:px-4 px-0 mt-12 pb-1">
+      <div className=" flex w-full justify-center items-center md:justify-between  mt-12 pb-2">
         {
           <>
-            <p className=" text-xs md:text-sm text-white/30">
-              Last price update: {lastTimeUpdatePrice} UTC
-            </p>
-            <p className=" text-xs md:text-sm text-white/30 ">
-              / Current UTC {currentTime}
-            </p>
+            <div className=" hidden md:inline ">
+              <PagesAmountAtTime amountPagesShown={amountPagesShown} setAmountPagesShown={setAmountPagesShown}/>
+            </div>
+            <div className=" flex items-center">
+              <p className=" text-xs md:text-sm text-white/30">
+                Last price update: {lastTimeUpdatePrice} UTC
+              </p>
+              <p className=" text-xs md:text-sm text-white/30 ">
+                / Current UTC {currentTime}
+              </p>
+            </div>
           </>
         }
       </div>
@@ -68,7 +74,7 @@ const Home = ({ data }: IProps): JSX.Element => {
           })}
       </div>
       <div className=" py-4 flex space-x-2">
-        {Array.from({ length: 10 }, (_, i) => i + 1).map((btn: number) => {
+        {Array.from({ length: 100/amountPagesShown }, (_, i) => i + 1).map((btn: number) => {
           return (
             <div
               onClick={() => {
