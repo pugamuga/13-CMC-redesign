@@ -31,7 +31,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
             className="md:h-6 md:w-6 h-4 w-4 object-contain rounded-full "
           />
         </div>
-        <p className="md:text-sm text-xs">{coin.name}</p>
+        <p className="md:text-sm text-xs truncate w-full">{coin.name}</p>
       </div>
       {/* ----------------------- */}
       <div
@@ -39,8 +39,8 @@ export default function CoinString({ coin }: IProps): JSX.Element {
         id="price"
       >
         <p className=" md:inline hidden">{coin.symbol.toUpperCase()}</p>
-        <div className="  superflex">
-          <span className="text-xs text-white/50">$</span>
+        <div className="  superflex md:text-base text-sm">
+          <span className="text-xs text-white/50  ">$</span>
           {coin.current_price}
         </div>
         <div
