@@ -29,9 +29,9 @@ export default function ProfileWindowHeader({
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           transition={{ easy: "easeOut" }}
-          className="flex justify-between text-white font-bold flex-col items-end absolute bg-[#6558de]/10 space-y-4
+          className="flex justify-between text-white font-bold flex-col items-end absolute bg-white/10 shadow-md space-y-4
         backdrop-blur-md  right-0 top-[50px] rounded-lg origin-top
-        md:origin-top-right  p-4 w-[92%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20 min-w-[300px] "
+        md:origin-top-right  p-4 w-[96%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20 min-w-[300px] "
         >
           {isLogin ? (
             <>
