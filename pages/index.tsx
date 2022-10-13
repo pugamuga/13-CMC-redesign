@@ -92,7 +92,7 @@ const Home = ({ data }: IProps): JSX.Element => {
             (btn: number) => {
               return (
                 <>
-                    {btn===10&&currentPage!==10&&currentPage!==9&&currentPage!==8&&<div className=" text-xl md:text-3xl md:mt-2">...</div>}
+                    {btn===10&&currentPage!==10&&currentPage!==9&&currentPage!==8&&currentPage!==7&&<div className=" text-xl md:text-3xl md:mt-2">...</div>}
                 <div
                   onClick={() => {
                     setCurrentPage(btn);
