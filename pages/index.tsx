@@ -8,6 +8,7 @@ import moment from "moment";
 import MobileSlider from "../components/MobileSlider";
 import DesktopSlider from "../components/DesktopSlider";
 import PagesAmountAtTime from "../components/PagesAmountAtTime";
+import { FiChevronsDown } from "react-icons/fi";
 
 interface IProps {
   data: MainCoinData[] | [];
@@ -50,7 +51,10 @@ const Home = ({ data }: IProps): JSX.Element => {
         {
           <>
             <div className=" hidden md:inline ">
-              <PagesAmountAtTime amountPagesShown={amountPagesShown} setAmountPagesShown={setAmountPagesShown}/>
+              <PagesAmountAtTime
+                amountPagesShown={amountPagesShown}
+                setAmountPagesShown={setAmountPagesShown}
+              />
             </div>
             <div className=" flex items-center">
               <p className=" text-xs md:text-sm text-white/30">
@@ -73,20 +77,48 @@ const Home = ({ data }: IProps): JSX.Element => {
             return <CoinString key={id} coin={coin} />;
           })}
       </div>
-      <div className=" py-4 flex space-x-2">
-        {Array.from({ length: 100/amountPagesShown }, (_, i) => i + 1).map((btn: number) => {
-          return (
-            <div
-              onClick={() => {
-                setCurrentPage(btn);
-              }}
-              key={btn}
-              className={`w-6 h-6 md:h-10 md:w-10 ${btn===currentPage?"grad":"grad-150"} hover:grad tr-300 superflex rounded-md shadow-md cursor-pointer text-sm`}
-            >
-              {btn}
-            </div>
-          );
-        })}
+      <div className=" flex items-center">
+        <div
+        onClick={() => {
+         setCurrentPage(1) 
+        }}>
+          <FiChevronsDown
+            className="h-5 w-5 text-gray-400 rotate-90 mx-2 cursor-pointer hover:scale-110 tr-300"
+            aria-hidden="true"
+          />
+        </div>
+        <div className=" py-4 flex space-x-2">
+          {Array.from({ length: 100 / amountPagesShown }, (_, i) => i + 1).filter((i)=>i<currentPage+3&&i>currentPage-2||i===10||i===1).map(
+            (btn: number) => {
+              return (
+                <>
+                    {btn===10&&currentPage!==10&&currentPage!==9&&currentPage!==8&&<div className=" text-xl md:text-3xl md:mt-2">...</div>}
+                <div
+                  onClick={() => {
+                    setCurrentPage(btn);
+                  }}
+                  key={btn}
+                  className={`w-6 h-6 md:h-10 md:w-10 ${
+                    btn === currentPage ? "grad" : "grad-150"
+                  } hover:grad tr-300 superflex rounded-md shadow-md cursor-pointer text-sm`}
+                  >
+                  {btn}
+                </div>
+               { btn===1&&currentPage!==1&&currentPage!==2&&currentPage!==3&&<div className=" text-xl md:text-3xl md:mt-2">...</div>}
+                  </>
+              );
+            }
+          )}
+        </div>
+        <div
+        onClick={() => {
+         setCurrentPage(100/amountPagesShown) 
+        }}>
+          <FiChevronsDown
+            className="h-5 w-5 text-gray-400 rotate-[270deg] mx-2 cursor-pointer hover:scale-110 tr-300"
+            aria-hidden="true"
+          />
+        </div>
       </div>
     </div>
   );
