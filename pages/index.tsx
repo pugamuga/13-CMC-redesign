@@ -9,6 +9,8 @@ import MobileSlider from "../components/MobileSlider";
 import DesktopSlider from "../components/DesktopSlider";
 import PagesAmountAtTime from "../components/PagesAmountAtTime";
 import { FiChevronsDown } from "react-icons/fi";
+import { motion ,AnimatePresence } from 'framer-motion';
+
 
 interface IProps {
   data: MainCoinData[] | [];
@@ -68,14 +70,17 @@ const Home = ({ data }: IProps): JSX.Element => {
         }
       </div>
       <div className=" flex flex-col w-full space-y-2 items-center  ">
+        <AnimatePresence >
+          
         {coins
           .slice(
             currentPage * amountPagesShown - amountPagesShown,
             currentPage * amountPagesShown
-          )
-          .map((coin: MainCoinData, id: number) => {
-            return <CoinString key={id} coin={coin} />;
-          })}
+            )
+            .map((coin: MainCoinData, id: number) => {
+              return <CoinString key={id} coin={coin} />;
+            })}
+            </AnimatePresence>
       </div>
       <div className=" flex items-center">
         <div

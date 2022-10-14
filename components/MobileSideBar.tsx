@@ -20,7 +20,7 @@ interface PageProps {
 
 export default function MobileSideBar() {
   const [selected, setSelected] = useRecoilState(pageState);
-  const router = useRouter();
+  const router = useRouter(); 
   nProgress.configure({ showSpinner: false });
 
   useEffect(() => {

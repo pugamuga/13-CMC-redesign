@@ -155,7 +155,7 @@ function FavResult({ user, coins, likeCoin }: FavProps): JSX.Element {
     );
   } else {
     return (
-      <div className=" md:px-2 md:pt-2 flex flex-col md:space-y-4 md:scale-100 scale-75 md:-mt-0 -mt-5 -mx-8 md:-mx-0">
+      <div className=" md:px-2 md:pt-2 flex flex-col md:space-y-4 md:scale-100 scale-[70%] md:-mt-0 -mt-6 space-y-2 -mx-10 md:-mx-0">
         <LoginHeader />
       </div>
     );
