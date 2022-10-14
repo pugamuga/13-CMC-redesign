@@ -18,7 +18,7 @@ export const getStaticPaths = async () => {
   });
 
   return {
-    paths: paths ,
+    paths: paths,
     fallback: false,
   };
 };
@@ -34,7 +34,6 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 };
 
 export default function CoinPage({ coin }: any): JSX.Element {
-  console.log(coin);
   return (
     <div>
       <Link href={"/"}>
@@ -43,6 +42,9 @@ export default function CoinPage({ coin }: any): JSX.Element {
           <p>Back</p>
         </div>
       </Link>
+      <div>
+        <p>{coin}</p>
+      </div>
     </div>
   );
 }
