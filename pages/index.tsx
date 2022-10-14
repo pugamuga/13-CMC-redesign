@@ -50,7 +50,7 @@ const Home = ({ data }: IProps): JSX.Element => {
           <MobileSlider />
         </div>
       </div>
-      <div className=" flex w-full justify-center items-center md:justify-between  mt-12 pb-2">
+      <div className=" flex w-full justify-center items-center md:justify-between  mt-12 pb-2 ">
         {
           <>
             <div className=" hidden md:inline ">

@@ -12,10 +12,10 @@ export default function PagesAmountAtTime({
   setAmountPagesShown,
 }: IProps): JSX.Element {
   return (
-    <div className=" text-white relative z-30 text-xs    ">
+    <div className=" text-white relative z-30 text-xs  cursor-pointer  ">
       <Listbox value={amountPagesShown} onChange={setAmountPagesShown}>
         <div className="relative mt-1">
-          <Listbox.Button className="relative w-[80px] cursor-default rounded-lg bg-white/10 drop-shadow-md py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ">
+          <Listbox.Button className="relative w-[80px] cursor-pointer rounded-lg bg-white/10 drop-shadow-md py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ">
             <div className="flex items-center space-x-2">
               {amountPagesShown}
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -40,7 +40,7 @@ export default function PagesAmountAtTime({
                   }}
                   key={personIdx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-4 pr-4 text-xs  ${
+                    `relative cursor-pointer select-none py-2 pl-4 pr-4 text-xs  ${
                       active ? "bg-primary/40 text-white" : "text-white"
                     }`
                   }
