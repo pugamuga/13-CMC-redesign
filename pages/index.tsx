@@ -132,7 +132,7 @@ const Home = ({ data }: IProps): JSX.Element => {
 export default Home;
 
 export const getServerSideProps = async () => {
-  const responce = await axios.get(coinGeckoUrl).catch((e) => console.log(e));
+  const responce = await axios.get(coinGeckoUrl)
   return {
     props: {
       data: responce?.data,
