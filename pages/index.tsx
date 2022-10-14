@@ -9,8 +9,7 @@ import MobileSlider from "../components/MobileSlider";
 import DesktopSlider from "../components/DesktopSlider";
 import PagesAmountAtTime from "../components/PagesAmountAtTime";
 import { FiChevronsDown } from "react-icons/fi";
-import { motion ,AnimatePresence } from 'framer-motion';
-
+import { motion, AnimatePresence } from "framer-motion";
 
 interface IProps {
   data: MainCoinData[] | [];
@@ -36,7 +35,9 @@ const Home = ({ data }: IProps): JSX.Element => {
   }, [currentTime]);
 
   useEffect(() => {
-    setCoins(data);
+    if(data){
+      setCoins(data);
+    }
   }, []);
 
   return (
@@ -70,55 +71,72 @@ const Home = ({ data }: IProps): JSX.Element => {
         }
       </div>
       <div className=" flex flex-col w-full space-y-2 items-center  ">
-        <AnimatePresence >
-          
-        {coins
-          .slice(
-            currentPage * amountPagesShown - amountPagesShown,
-            currentPage * amountPagesShown
+        <AnimatePresence>
+          {coins
+            .slice(
+              currentPage * amountPagesShown - amountPagesShown,
+              currentPage * amountPagesShown
             )
             .map((coin: MainCoinData, id: number) => {
               return <CoinString key={id} coin={coin} />;
             })}
-            </AnimatePresence>
+        </AnimatePresence>
       </div>
       <div className=" flex items-center">
         <div
-        onClick={() => {
-         setCurrentPage(1) 
-        }}>
+          onClick={() => {
+            setCurrentPage(1);
+          }}
+        >
           <FiChevronsDown
             className="h-5 w-5 text-gray-400 rotate-90 mx-2 cursor-pointer hover:scale-110 tr-300"
             aria-hidden="true"
           />
         </div>
         <div className=" py-4 flex space-x-2">
-          {Array.from({ length: 100 / amountPagesShown }, (_, i) => i + 1).filter((i)=>i<currentPage+3&&i>currentPage-2||i===10||i===1).map(
-            (btn: number) => {
+          {Array.from({ length: 100 / amountPagesShown }, (_, i) => i + 1)
+            .filter(
+              (i) =>
+                (i < currentPage + 3 && i > currentPage - 2) ||
+                i === 10 ||
+                i === 1
+            )
+            .map((btn: number) => {
               return (
                 <>
-                    {btn===10&&currentPage!==10&&currentPage!==9&&currentPage!==8&&currentPage!==7&&<div className=" text-xl md:text-3xl md:mt-2">...</div>}
-                <div
-                  onClick={() => {
-                    setCurrentPage(btn);
-                  }}
-                  key={btn}
-                  className={`w-6 h-6 md:h-10 md:w-10 ${
-                    btn === currentPage ? "grad" : "grad-150"
-                  } hover:grad tr-300 superflex rounded-md shadow-md cursor-pointer text-sm`}
+                  {btn === 10 &&
+                    currentPage !== 10 &&
+                    currentPage !== 9 &&
+                    currentPage !== 8 &&
+                    currentPage !== 7 && (
+                      <div className=" text-xl md:text-3xl md:mt-2">...</div>
+                    )}
+                  <div
+                    onClick={() => {
+                      setCurrentPage(btn);
+                    }}
+                    key={btn}
+                    className={`w-6 h-6 md:h-10 md:w-10 ${
+                      btn === currentPage ? "grad" : "grad-150"
+                    } hover:grad tr-300 superflex rounded-md shadow-md cursor-pointer text-sm`}
                   >
-                  {btn}
-                </div>
-               { btn===1&&currentPage!==1&&currentPage!==2&&currentPage!==3&&<div className=" text-xl md:text-3xl md:mt-2">...</div>}
-                  </>
+                    {btn}
+                  </div>
+                  {btn === 1 &&
+                    currentPage !== 1 &&
+                    currentPage !== 2 &&
+                    currentPage !== 3 && (
+                      <div className=" text-xl md:text-3xl md:mt-2">...</div>
+                    )}
+                </>
               );
-            }
-          )}
+            })}
         </div>
         <div
-        onClick={() => {
-         setCurrentPage(100/amountPagesShown) 
-        }}>
+          onClick={() => {
+            setCurrentPage(100 / amountPagesShown);
+          }}
+        >
           <FiChevronsDown
             className="h-5 w-5 text-gray-400 rotate-[270deg] mx-2 cursor-pointer hover:scale-110 tr-300"
             aria-hidden="true"
@@ -132,10 +150,11 @@ const Home = ({ data }: IProps): JSX.Element => {
 export default Home;
 
 export const getServerSideProps = async () => {
-  const responce = await axios.get(coinGeckoUrl)
-  return {
-    props: {
-      data: responce?.data,
-    },
-  };
+    const responce = await fetch(coinGeckoUrl);
+    const data = await responce.json()
+    return {
+      props: {
+        data: data
+      },
+    };
 };

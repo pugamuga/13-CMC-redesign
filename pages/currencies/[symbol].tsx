@@ -23,21 +23,25 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
-  if (context.params?.symbol) {
-    const responce = await fetch(coinGeckoUrl);
-    const data = await responce.json();
+  try {
+    if (context.params?.symbol) {
+      const responce = await fetch(coinGeckoUrl);
+      const data = await responce.json();
 
-    const coinData = context.params.symbol;
+      const coinData = context.params.symbol;
 
-    if (data) {
-      const arrayCoinsCheck: MainCoinData = data?.filter(
-        (coin: MainCoinData) => coin.symbol === coinData
-      );
+      if (data) {
+        const arrayCoinsCheck: MainCoinData = data?.filter(
+          (coin: MainCoinData) => coin.symbol === coinData
+        );
 
-      return {
-        props: { coin: arrayCoinsCheck },
-      };
+        return {
+          props: { coin: arrayCoinsCheck },
+        };
+      }
     }
+  } catch (error) {
+    return null;
   }
 };
 
@@ -46,20 +50,22 @@ interface IProps {
 }
 
 export default function CoinPage({ coin }: IProps): JSX.Element {
-  console.log(coin);
-
-  return (
-    <div>
-      <Link href={"/"}>
-        <div className=" flex items-center cursor-pointer space-x-2">
-          <IoIosArrowRoundBack className="text-xl" />
-          <p>Back</p>
-        </div>
-      </Link>
+  console.log(coin)
+  if (coin) {
+    return (
       <div>
-        <p>{coin[0].name}</p>
-        <p>{coin[0].current_price}</p>
+        <Link href={"/"}>
+          <div className=" flex items-center cursor-pointer space-x-2">
+            <IoIosArrowRoundBack className="text-xl" />
+            <p>Back</p>
+          </div>
+        </Link>
+        <div>
+          <p>{coin[0]?.name}</p>
+          <p>{coin[0]?.current_price}</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  return <div>Error Api</div>;
 }

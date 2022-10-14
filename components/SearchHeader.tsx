@@ -2,6 +2,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import OutsideClickHandler from "react-outside-click-handler";
+import { useRecoilState } from "recoil";
+import { coinDataState } from "../recoilState/recoilState";
 
 interface IProps {
   showInputHeader: boolean;
@@ -13,6 +15,7 @@ export default function SearchHeader({
   setShowInputHeader,
 }: IProps): JSX.Element {
   const [inputValue, setInputValue] = useState<string | number>("");
+  const [coins, setCoins] = useRecoilState(coinDataState);
 
   console.log(!!inputValue);
   return (
@@ -50,7 +53,7 @@ export default function SearchHeader({
             placeholder="Search coin..."
           />
           {inputValue && (
-            <div className=" bg-[#fbf8fc] text-primary rounded-b-lg py-4">
+            <div className=" bg-[#fbf8fc] text-primary rounded-b-lg py-4 max-h-[300px] overflow-y-scroll scrollbar-hide">
               Results
               <p>sdgsedgesg</p>
               <p>sdgsedgesg</p>
