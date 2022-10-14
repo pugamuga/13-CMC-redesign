@@ -25,15 +25,27 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   if (context.params?.symbol) {
-    const symbol = context.params.symbol;
+    const responce = await axios.get(coinGeckoUrl);
+
+    const coinData = context.params.symbol;
+
+    const arrayCoinsCheck: MainCoinData = responce.data.filter(
+      (coin: MainCoinData) => coin.symbol === coinData
+    );
 
     return {
-      props: { coin: symbol },
+      props: { coin: arrayCoinsCheck },
     };
   }
 };
 
-export default function CoinPage({ coin }: any): JSX.Element {
+interface IProps {
+  coin: MainCoinData[];
+}
+
+export default function CoinPage({ coin }: IProps): JSX.Element {
+  console.log(coin);
+
   return (
     <div>
       <Link href={"/"}>
@@ -43,7 +55,8 @@ export default function CoinPage({ coin }: any): JSX.Element {
         </div>
       </Link>
       <div>
-        <p>{coin}</p>
+        <p>{coin[0].name}</p>
+        <p>{coin[0].current_price}</p>
       </div>
     </div>
   );
