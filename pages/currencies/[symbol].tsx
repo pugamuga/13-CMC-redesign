@@ -29,7 +29,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
     const coinData = context.params.symbol;
 
-    const arrayCoinsCheck: MainCoinData = data.filter(
+    const arrayCoinsCheck: MainCoinData = data?.filter(
       (coin: MainCoinData) => coin.symbol === coinData
     );
 
