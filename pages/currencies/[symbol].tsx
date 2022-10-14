@@ -25,17 +25,19 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   if (context.params?.symbol) {
     const responce = await fetch(coinGeckoUrl);
-  const data = await responce.json();
+    const data = await responce.json();
 
     const coinData = context.params.symbol;
 
-    const arrayCoinsCheck: MainCoinData = data?.filter(
-      (coin: MainCoinData) => coin.symbol === coinData
-    );
+    if (data) {
+      const arrayCoinsCheck: MainCoinData = data?.filter(
+        (coin: MainCoinData) => coin.symbol === coinData
+      );
 
-    return {
-      props: { coin: arrayCoinsCheck },
-    };
+      return {
+        props: { coin: arrayCoinsCheck },
+      };
+    }
   }
 };
 
