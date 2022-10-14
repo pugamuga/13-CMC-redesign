@@ -33,4 +33,10 @@ export const coinDataState = atom<MainCoinData[] | []>({
 });
 
 
+export const favoriteCoin = atom<boolean>({
+  key: "favoriteCoin",
+  default: false,
+});
+
+
 

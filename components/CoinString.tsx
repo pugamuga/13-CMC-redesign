@@ -2,13 +2,15 @@ import Image from "next/image";
 import { useState } from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { Sparklines, SparklinesLine } from "react-sparklines";
+import { useRecoilState } from "recoil";
+import { favoriteCoin } from "../recoilState/recoilState";
 
 interface IProps {
   coin: MainCoinData;
 }
 
 export default function CoinString({ coin }: IProps): JSX.Element {
-  const [likeCoin, setLikeCoin] = useState(false);
+  const [likeCoin, setLikeCoin] = useRecoilState(favoriteCoin);
 
   const sparklineColor =
     coin.sparkline_in_7d.price[0] <
@@ -23,7 +25,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
         className=" flex items-center space-x-1 md:space-x-3 md:w-[20%] w-[40%] "
         id="name"
       >
-        {likeCoin ? <AiFillStar className="text-2xl md:text-[40px] hover:scale-110 tr-300 text-violet-500"/> : <AiOutlineStar className="text-2xl md:text-[40px] hover:scale-110 tr-300 opacity-50"/>}
+        {likeCoin? <AiFillStar className="text-2xl md:text-[40px] hover:scale-110 tr-300 text-violet-500 md:w-16 "/> : <AiOutlineStar className=" md:w-16 text-2xl md:text-[40px] hover:scale-110 tr-300 opacity-50"/>}
         <p className="md:text-sm text-xs text-center w-12">{coin.market_cap_rank}</p>
         <div className="mx-2 superflex  relative ">
           <img

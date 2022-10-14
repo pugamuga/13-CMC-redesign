@@ -9,7 +9,6 @@ export default function MobileSlider(): JSX.Element {
     "left" | "right"
   >("right");
 
-  console.log(MSstate);
   return (
     <div className="w-full h-full relative ">
       <div
