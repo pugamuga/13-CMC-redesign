@@ -1,7 +1,6 @@
 import axios from "axios";
-import { GetStaticProps, GetStaticPropsContext } from "next";
+import { GetStaticPropsContext } from "next";
 import Link from "next/link";
-import { useEffect } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 const coinGeckoUrl =
@@ -25,11 +24,12 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   if (context.params?.symbol) {
-    const responce = await axios.get(coinGeckoUrl);
+    const responce = await fetch(coinGeckoUrl);
+  const data = await responce.json();
 
     const coinData = context.params.symbol;
 
-    const arrayCoinsCheck: MainCoinData = responce.data.filter(
+    const arrayCoinsCheck: MainCoinData = data.filter(
       (coin: MainCoinData) => coin.symbol === coinData
     );
 
