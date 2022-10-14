@@ -3,6 +3,7 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { coinDataState, favoriteCoin } from "../recoilState/recoilState";
 import CoinStringSlider from "./CoinStringSlider";
+import LoginHeader from "./LoginHeader";
 
 interface Iprops {
   name: string;
@@ -14,14 +15,19 @@ export default function SlideTop({ name, type }: Iprops): JSX.Element {
   const [likeCoin, setLikeCoin] = useRecoilState(favoriteCoin);
 
   const coinsForFilter = [...coins];
+  const coinsForFilterNew = [...coins];
 
   const coinGainers: MainCoinData[] = coinsForFilter.sort(
+    (a: MainCoinData, b: MainCoinData) => {
+      return b.price_change_percentage_24h - a.price_change_percentage_24h;
+    }
+  );
+
+  const coinLosers: MainCoinData[] = coinsForFilterNew.sort(
     (a: MainCoinData, b: MainCoinData) => {
       return a.price_change_percentage_24h - b.price_change_percentage_24h;
     }
   );
-
-  const coinLosers: MainCoinData[] = coinGainers.reverse();
 
   return (
     <div className=" h-full w-full grad-150 rounded-lg p-2">
@@ -47,7 +53,7 @@ export default function SlideTop({ name, type }: Iprops): JSX.Element {
               );
             })}
           </div>
-          <div className="hidden md:flex w-full h-full flex-col justify-between  pt-2 md:pb-12 pb-8">
+          <div className="hidden md:flex w-full h-full flex-col justify-between  pt-2 md:pb-10 pb-8">
             {coinGainers.slice(0, 5).map((coin: MainCoinData) => {
               return (
                 <CoinStringSlider
@@ -75,7 +81,7 @@ export default function SlideTop({ name, type }: Iprops): JSX.Element {
               );
             })}
           </div>
-          <div className="hidden md:flex w-full h-full flex-col justify-between  pt-2 md:pb-12 pb-8">
+          <div className="hidden md:flex w-full h-full flex-col justify-between  pt-2 md:pb-10 pb-8">
             {coinLosers.slice(0, 5).map((coin: MainCoinData) => {
               return (
                 <CoinStringSlider
@@ -89,6 +95,13 @@ export default function SlideTop({ name, type }: Iprops): JSX.Element {
         </>
       )}
       {/* ------------Losers--------------- */}
+      {/* ------------Favorites--------------- */}
+      {type === "favorite" && (
+        <>
+          <FavResult user={!true} coins={coins} likeCoin={likeCoin} />
+        </>
+      )}
+      {/* ------------Favorites--------------- */}
     </div>
   );
 }
@@ -113,4 +126,38 @@ function Favorite(): JSX.Element {
       <AiFillStar className="text-violet-500" />
     </>
   );
+}
+
+interface FavProps {
+  user: boolean;
+  coins: MainCoinData[];
+  likeCoin: boolean;
+}
+function FavResult({ user, coins, likeCoin }: FavProps): JSX.Element {
+  if (user) {
+    return (
+      <>
+        <div className=" w-full h-full flex flex-col justify-between px-2 pt-2 md:hidden pb-8">
+          {coins.slice(0, 3).map((coin: MainCoinData) => {
+            return (
+              <CoinStringSlider key={coin.id} likeCoin={likeCoin} coin={coin} />
+            );
+          })}
+        </div>
+        <div className="hidden md:flex w-full h-full flex-col justify-between  pt-2 md:pb-10 pb-8">
+          {coins.slice(0, 5).map((coin: MainCoinData) => {
+            return (
+              <CoinStringSlider key={coin.id} likeCoin={likeCoin} coin={coin} />
+            );
+          })}
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <div className=" md:px-2 md:pt-2 flex flex-col md:space-y-4 md:scale-100 scale-75 md:-mt-0 -mt-5 -mx-8 md:-mx-0">
+        <LoginHeader />
+      </div>
+    );
+  }
 }
