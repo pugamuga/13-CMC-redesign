@@ -3,7 +3,7 @@ body{
 display: block;
 }
 #globalLoader{
-    position: fixed;
+    position: absolute;
     z-index: 1700;
     top: 50%;
     left: 50%;

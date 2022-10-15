@@ -72,7 +72,7 @@ const Home = ({ data }: IProps): JSX.Element => {
       </div>
       <div className=" flex flex-col w-full space-y-2 items-center  ">
         <AnimatePresence>
-          {coins
+          {coins.length>0&& coins
             .slice(
               currentPage * amountPagesShown - amountPagesShown,
               currentPage * amountPagesShown
