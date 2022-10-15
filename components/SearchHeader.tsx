@@ -25,7 +25,7 @@ export default function SearchHeader({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
       id="input-blur"
-      className=" absolute h-screen w-screen z-50 backdrop-blur-sm top-0 left-0 bg-primary/10 flex justify-center"
+      className=" absolute h-screen w-screen z-50 backdrop-blur-sm top-0 left-0 bg-gradient-to-br from-primary to-purple-900 flex justify-center"
     >
       <motion.div
         id="blur-div"
@@ -41,7 +41,7 @@ export default function SearchHeader({
         >
           <BiSearchAlt className="text-primary/50 md:text-2xl text-xl tr-300 absolute top-0 right-4 bottom-0 my-auto select-none " />
           <input
-          autoFocus
+            autoFocus
             value={inputValue}
             onChange={(e) => {
               setInputValue(e.target.value);
