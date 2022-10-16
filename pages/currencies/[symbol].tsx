@@ -71,7 +71,7 @@ export default function CoinPage({ coin }: any): JSX.Element {
     return (
       <div>
         <Link href={"/"}>
-          <div className=" flex items-center cursor-pointer space-x-2">
+          <div className=" flex items-center cursor-pointer space-x-2 bg-violet-700/0 hover:bg-violet-700/40 tr-300 rounded-md pl-1 pr-3 py-1">
             <IoIosArrowRoundBack className="text-xl" />
             <p>Back</p>
           </div>

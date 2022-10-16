@@ -4,6 +4,7 @@ import { BiSearchAlt } from "react-icons/bi";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useRecoilState } from "recoil";
 import { coinDataState } from "../recoilState/recoilState";
+import CoinStringSlider from "./CoinStringSlider";
 
 interface IProps {
   showInputHeader: boolean;
@@ -14,7 +15,7 @@ export default function SearchHeader({
   showInputHeader,
   setShowInputHeader,
 }: IProps): JSX.Element {
-  const [inputValue, setInputValue] = useState<string | number>("");
+  const [inputValue, setInputValue] = useState<string>("");
   const [coins, setCoins] = useRecoilState(coinDataState);
 
   console.log(!!inputValue);
@@ -47,18 +48,31 @@ export default function SearchHeader({
               setInputValue(e.target.value);
             }}
             type="text"
-            className={` h-14 w-full ${
-              inputValue ? "rounded-t-lg" : "rounded-lg"
-            }  text-primary px-5 outline-none text-sm placeholder:text-primary/50 `}
+            className={` h-14 w-full rounded-lg  text-primary px-5 outline-none text-sm placeholder:text-primary/50 `}
             placeholder="Search coin..."
           />
           {inputValue && (
-            <div className=" bg-[#fbf8fc] text-primary rounded-b-lg py-4 max-h-[300px] overflow-y-scroll scrollbar-hide">
-              Results
-              <p>sdgsedgesg</p>
-              <p>sdgsedgesg</p>
-              <p>sdgsedgesg</p>
-              <p>sdgsedgesg</p>
+            <div className=" bg-white/10 text-white rounded-lg p-2 space-y-2 min-h-[100px] max-h-[250px] md:max-h-[400px] overflow-y-scroll scrollbar-hide mt-2">
+              {coins
+                .filter((coin: MainCoinData) => {
+                  return (
+                    coin.name
+                      .toLowerCase()
+                      .includes(inputValue.toLowerCase()) ||
+                    coin.symbol
+                      .toLowerCase()
+                      .includes(inputValue.toLowerCase()) ||
+                    coin.market_cap_rank.toString() === inputValue
+                  );
+                })
+                .map((coin: MainCoinData) => {
+                  return <CoinStringSlider key={coin.id} coin={coin} />;
+                })}
+              {coins.length === 100 && (
+                <div className=" h-[80px] superflex ">
+                  <p className=" text-2xl text-white/30">No match...</p>
+                </div>
+              )}
             </div>
           )}
         </OutsideClickHandler>

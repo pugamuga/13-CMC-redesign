@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 
 interface IProps {
-  likeCoin: boolean;
+  likeCoin?: boolean;
   coin: MainCoinData;
 }
 
