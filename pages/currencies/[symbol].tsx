@@ -1,6 +1,7 @@
 import axios from "axios";
 import { GetStaticPropsContext } from "next";
 import Link from "next/link";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useRecoilState } from "recoil";
 import { coinDataState } from "../../recoilState/recoilState";
@@ -69,16 +70,37 @@ export default function CoinPage({ coin }: any): JSX.Element {
   console.log(coinUse);
   if (coin) {
     return (
-      <div>
+      <div className=" w-full h-full">
         <Link href={"/"}>
-          <div className=" flex items-center cursor-pointer space-x-2 bg-violet-700/0 hover:bg-violet-700/40 tr-300 rounded-md pl-1 pr-3 py-1">
+          <div className=" flex w-[80px] md:w-[80px] items-center cursor-pointer space-x-2 bg-violet-700/0 hover:bg-violet-700/40 tr-300 rounded-md pl-1  py-1">
             <IoIosArrowRoundBack className="text-xl" />
             <p>Back</p>
           </div>
         </Link>
-        <div>
-          <p>{coin[0]?.name}</p>
-          <p>{coin[0]?.current_price}</p>
+        <div className=" w-full flex justify-between p-4 border-2 rounded-md border-white/10">
+          <div className=" w-full ">
+            <div className=" flex items-center  w-full justify-between ">
+              <div className=" flex items-center  space-x-2">
+                <img
+                  src={coinUse?.image}
+                  className={`w-12 h-12 object-contain`}
+                />
+                <p className=" text-2xl">{coinUse?.name}</p>
+                <div className=" grad-150 text-white px-2 py-1 rounded-md">
+                  {coinUse?.symbol.toUpperCase()}
+                </div>
+              </div>
+              {true ? (
+                <AiFillStar className="text-3xl md:text-[40px] hover:scale-110 tr-300 text-violet-500  " />
+              ) : (
+                <AiOutlineStar className="text-3xl md:text-[40px] hover:scale-110 tr-300 opacity-50" />
+              )}
+            </div>
+            <div className=" mt-4 text-sm grad-150 text-white px-2 py-1 rounded-md w-[70px]">
+              Rank #{coinUse?.market_cap_rank}
+            </div>
+          </div>
+          <div></div>
         </div>
       </div>
     );
