@@ -11,9 +11,9 @@ export default function CoinStringSlider({
   coin,
 }: IProps): JSX.Element {
   return (
-    <Link href={`/currencies/${coin.symbol}`}> 
+    <Link href={`/currencies/${coin.symbol}`}>
       <div className="w-full items-center flex justify-between py-2 grad-150 px-2 cursor-pointer rounded-lg hover:scale-x-[102%] tr-300 border-[1px] border-white/0 hover:border-white/30">
-        <div className=" flex items-center justify-start space-x-2  w-[40%] md:w-[30%]">
+        <div className=" flex items-center  space-x-2  w-[300px] md:w-[30%] ">
           {likeCoin ? (
             <AiFillStar className="text-md md:text-[20px] hover:scale-110 tr-300 text-violet-500  " />
           ) : (
@@ -25,10 +25,13 @@ export default function CoinStringSlider({
           </p>
           <p>{coin.symbol.toUpperCase()}</p>
         </div>
-        <div className=" flex justify-center  w-full">
-          <p className=" flex items-center">
-            <span className="text-xs text-white/50 ">$</span>
-            {coin.current_price}
+        <div className=" flex justify-center w-full">
+          <p className=" flex items-center  ">
+            <p className="w-[80px] text-center truncate">
+              <span className="text-xs text-white/50 ">$</span>
+
+              {coin.current_price}
+            </p>
           </p>
         </div>
         <div className="">
