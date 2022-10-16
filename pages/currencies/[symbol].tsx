@@ -80,7 +80,7 @@ export default function CoinPage({ coin }: any): JSX.Element {
         <div className=" w-full flex justify-between p-4 border-2 rounded-md border-white/10">
           <div className=" w-full ">
             <div className=" flex items-center  w-full justify-between ">
-              <div className=" flex items-center  space-x-2">
+              <div className=" flex items-center  space-x-2 mr-2">
                 <img
                   src={coinUse?.image}
                   className={`w-12 h-12 object-contain`}
@@ -96,11 +96,13 @@ export default function CoinPage({ coin }: any): JSX.Element {
                 <AiOutlineStar className="text-3xl md:text-[40px] hover:scale-110 tr-300 opacity-50" />
               )}
             </div>
-            <div className=" mt-4 text-sm grad-150 text-white px-2 py-1 rounded-md w-[70px]">
+            <div className=" mt-4 text-xs grad-150 text-white px-2 py-1 rounded-md text-center w-[80px]">
               Rank #{coinUse?.market_cap_rank}
             </div>
           </div>
-          <div></div>
+        </div>
+        <div className="p-4 border-2 rounded-md border-white/10 w-full flex mt-4">
+
         </div>
       </div>
     );
