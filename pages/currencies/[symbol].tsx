@@ -32,27 +32,6 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
       props: { coin: coinData },
     };
   }
-
-  // try {
-  //   if (context.params?.symbol) {
-  //     const responce = await fetch(coinGeckoUrl);
-  //     const data = await responce.json();
-
-  //     const coinData = context.params.symbol;
-
-  //     if (data) {
-  //       const arrayCoinsCheck: MainCoinData = data?.filter(
-  //         (coin: MainCoinData) => coin.symbol === coinData
-  //       );
-
-  //       return {
-  //         props: { coin: arrayCoinsCheck },
-  //       };
-  //     }
-  //   }
-  // } catch (error) {
-  //   return null;
-  // }
 };
 
 interface IProps {
@@ -66,8 +45,13 @@ export default function CoinPage({ coin }: any): JSX.Element {
     (coinName: MainCoinData) => coinName.symbol === coin
   );
   const coinUse: MainCoinData = coinDataOnPage[0];
+  const mathLine =
+    (100 /
+      (coinUse?.high_24h - coinUse?.low_24h) /
+      (coinUse?.current_price - coinUse?.low_24h)) *
+    100;
 
-  console.log(coinUse);
+  console.log(mathLine);
   if (coin) {
     return (
       <div className=" w-full h-full">
@@ -102,11 +86,11 @@ export default function CoinPage({ coin }: any): JSX.Element {
           </div>
         </div>
         <div className="p-4 border-2 rounded-md border-white/10 w-full flex mt-4">
-          <div className=" flex flex-col space-y-2" id="price">
+          <div className=" flex flex-col space-y-2 w-full" id="price">
             <p className=" text-xs text-white/40">
               {coinUse?.name} Price ({coinUse?.symbol.toUpperCase()})
             </p>
-            <div className="flex items-center space-x-2 ">
+            <div className="flex items-center  space-x-2 ">
               <p className="text-3xl truncate w-[70%]">
                 {" "}
                 $
@@ -133,73 +117,99 @@ export default function CoinPage({ coin }: any): JSX.Element {
             </div>
             <div className=" flex flex-col space-y-1 ">
               {/* -----------btc------------ */}
-             {coinUse?.id !== coins[0]?.id&& <div className=" flex space-x-2 items-center">
-                <p className=" text-xs text-white/50">
-                  {(coinUse?.current_price / coins[0]?.current_price).toFixed(
-                    8
-                  )}{" "}
-                  BTC
-                </p>
-                <div
-                  className={` tr-300  px-2 py-1 text-xs rounded-lg flex space-x-1 items-center ${
-                    coinUse?.price_change_percentage_24h > 0
-                      ? "text-[#67dfbd]"
-                      : "text-[#ff7171]"
-                  }`}
-                >
-                  <AiFillCaretDown
-                    className={`tr-300 ${
-                      coinUse?.price_change_percentage_24h > 0
-                        ? "rotate-180"
-                        : "rotate-0"
-                    }`}
-                  />
-                  <p>
-                    {(
-                      coinUse?.price_change_percentage_24h -
-                      coins[0]?.price_change_percentage_24h
-                    ).toFixed(4)}
-                    %
+              {coinUse?.id !== coins[0]?.id && (
+                <div className=" flex space-x-2 items-center">
+                  <p className=" text-xs text-white/50">
+                    {(coinUse?.current_price / coins[0]?.current_price).toFixed(
+                      8
+                    )}{" "}
+                    BTC
                   </p>
+                  <div
+                    className={` tr-300  px-2 py-1 text-xs rounded-lg flex space-x-1 items-center ${
+                      coinUse?.price_change_percentage_24h > 0
+                        ? "text-[#67dfbd]"
+                        : "text-[#ff7171]"
+                    }`}
+                  >
+                    <AiFillCaretDown
+                      className={`tr-300 ${
+                        coinUse?.price_change_percentage_24h > 0
+                          ? "rotate-180"
+                          : "rotate-0"
+                      }`}
+                    />
+                    <p>
+                      {(
+                        coinUse?.price_change_percentage_24h -
+                        coins[0]?.price_change_percentage_24h
+                      ).toFixed(4)}
+                      %
+                    </p>
+                  </div>
                 </div>
-              </div>}
+              )}
               {/* -----------btc------------ */}
               {/* -----------eth------------ */}
-             {coinUse?.id !== coins[1]?.id&& <div className="flex space-x-2 items-center">
-                <p className=" text-xs text-white/50">
-                  {(coinUse?.current_price / coins[1]?.current_price).toFixed(
-                    8
-                  )}{" "}
-                  ETH
-                </p>
-                <div
-                  className={` tr-300  px-2 py-1 text-xs rounded-lg flex space-x-1 items-center ${
-                    coinUse?.price_change_percentage_24h -
-                      coins[0]?.price_change_percentage_24h >
-                    0
-                      ? "text-[#67dfbd]"
-                      : "text-[#ff7171]"
-                  }`}
-                >
-                  <AiFillCaretDown
-                    className={`tr-300 ${
+              {coinUse?.id !== coins[1]?.id && (
+                <div className="flex space-x-2 items-center">
+                  <p className=" text-xs text-white/50">
+                    {(coinUse?.current_price / coins[1]?.current_price).toFixed(
+                      8
+                    )}{" "}
+                    ETH
+                  </p>
+                  <div
+                    className={` tr-300  px-2 py-1 text-xs rounded-lg flex space-x-1 items-center ${
                       coinUse?.price_change_percentage_24h -
                         coins[0]?.price_change_percentage_24h >
                       0
-                        ? "rotate-180"
-                        : "rotate-0"
+                        ? "text-[#67dfbd]"
+                        : "text-[#ff7171]"
                     }`}
-                  />
-                  <p>
-                    {(
-                      coinUse?.price_change_percentage_24h -
-                      coins[1]?.price_change_percentage_24h
-                    ).toFixed(4)}
-                    %
-                  </p>
+                  >
+                    <AiFillCaretDown
+                      className={`tr-300 ${
+                        coinUse?.price_change_percentage_24h -
+                          coins[0]?.price_change_percentage_24h >
+                        0
+                          ? "rotate-180"
+                          : "rotate-0"
+                      }`}
+                    />
+                    <p>
+                      {(
+                        coinUse?.price_change_percentage_24h -
+                        coins[1]?.price_change_percentage_24h
+                      ).toFixed(4)}
+                      %
+                    </p>
+                  </div>
                 </div>
-              </div>}
+              )}
               {/* -----------eth------------ */}
+            </div>
+            <div className=" w-full pt-4 ">
+              <p className=" w-full text-center text-xs text-white/50 pb-1">
+                24h <span className="text-[#ff7171]/50">low</span> and{" "}
+                <span className="text-[#67dfbd]/50">high</span>{" "}
+              </p>
+              <div className=" flex justify-between w-full items-center text-xs ">
+                <p className=" w-24 truncate text-[#ff7171]">
+                  {coinUse?.low_24h}
+                </p>
+                <div className=" bg-white/10 w-full mx-2 rounded-full h-4 flex items-center px-1">
+                  <div
+                    className="grad h-2 rounded-full "
+                    style={{
+                      width: `${mathLine<100?mathLine.toFixed(0):"50"}%`,
+                    }}
+                  />
+                </div>
+                <p className=" w-24 truncate text-[#67dfbd]">
+                  {coinUse?.high_24h}
+                </p>
+              </div>
             </div>
           </div>
         </div>
