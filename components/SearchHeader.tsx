@@ -18,7 +18,16 @@ export default function SearchHeader({
   const [inputValue, setInputValue] = useState<string>("");
   const [coins, setCoins] = useRecoilState(coinDataState);
 
-  console.log(!!inputValue);
+  const resultArray: MainCoinData[] = coins.filter((coin: MainCoinData) => {
+    return (
+      coin.name.toLowerCase().includes(inputValue.toLowerCase()) ||
+      coin.symbol.toLowerCase().includes(inputValue.toLowerCase()) ||
+      coin.market_cap_rank.toString() === inputValue
+    );
+  });
+
+  console.log(resultArray);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -52,24 +61,17 @@ export default function SearchHeader({
             placeholder="Search coin..."
           />
           {inputValue && (
-            <div className=" bg-white/10 text-white rounded-lg p-2 space-y-2 min-h-[100px] max-h-[250px] md:max-h-[400px] overflow-y-scroll scrollbar-hide mt-2">
-              {coins
-                .filter((coin: MainCoinData) => {
-                  return (
-                    coin.name
-                      .toLowerCase()
-                      .includes(inputValue.toLowerCase()) ||
-                    coin.symbol
-                      .toLowerCase()
-                      .includes(inputValue.toLowerCase()) ||
-                    coin.market_cap_rank.toString() === inputValue
-                  );
-                })
+            <div className=" bg-white/10 text-white rounded-lg p-2 space-y-2  max-h-[250px] md:max-h-[400px] overflow-y-scroll scrollbar-hide mt-2">
+              {resultArray
                 .map((coin: MainCoinData) => {
-                  return <CoinStringSlider key={coin.id} coin={coin} />;
+                  return <div onClick={() => {
+                    setShowInputHeader(false)
+                  }}>
+                    <CoinStringSlider key={coin.id} coin={coin} />
+                  </div>
                 })}
-              {coins.length === 100 && (
-                <div className=" h-[80px] superflex ">
+              {resultArray.length === 0 && (
+                <div className=" py-1 superflex ">
                   <p className=" text-2xl text-white/30">No match...</p>
                 </div>
               )}
