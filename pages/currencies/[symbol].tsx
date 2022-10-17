@@ -70,7 +70,7 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
 
   if (coin) {
     return (
-      <div className=" w-full h-full">
+      <div className=" w-full h-full pb-4">
         <Link href={"/"}>
           <div className=" flex w-[80px] md:w-[80px] items-center cursor-pointer space-x-2 bg-violet-700/0 hover:bg-violet-700/40 tr-300 rounded-md pl-1  py-1">
             <IoIosArrowRoundBack className="text-xl" />
@@ -107,7 +107,7 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
               {coinUse?.name} Price ({coinUse?.symbol.toUpperCase()})
             </p>
             <div className="flex items-center  space-x-2 ">
-              <p className="text-3xl truncate w-[70%]">
+              <p className="text-3xl truncate w-[70%] md:w-[180px]">
                 {" "}
                 $
                 {coinUse?.current_price > 2
@@ -229,10 +229,42 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
             </div>
           </div>
         </div>
+        {/* ----------------MarketCap------------------- */}
+        <div className="border-2 rounded-md border-white/10 w-full flex flex-col mt-4 p-2 h-[200px] divide-y-[2px] divide-white/10 ">
+          <div className=" w-full h-1/2 divide-x-[2px] divide-white/10 flex">
+            <div className="h-full w-1/2 flex justify-between flex-col items-center py-2 ">
+              <p className=" text-sm text-white/50">Market Cap</p>
+              <p className=" pb-[50%] pt-2 text-md md:text-xl">
+                ${coinUse?.market_cap?.toLocaleString("en-US")}
+              </p>
+            </div>
+            <div className="h-full w-1/2 flex justify-between flex-col items-center py-2 ">
+              <p className=" text-sm text-white/50">Volume 24h</p>
+              <p className=" pb-[50%] pt-2 text-md md:text-xl">
+                ${coinUse?.total_volume?.toLocaleString("en-US")}
+              </p>
+            </div>
+          </div>
+          <div className=" w-full h-1/2 divide-x-[2px] divide-white/10 flex">
+            <div className="h-full w-1/2 flex justify-between flex-col items-center py-2 pt-2">
+              <p className=" text-sm text-white/50">Total Supply</p>
+              <p className=" pb-[50%] pt-2 text-md md:text-xl">
+                {coinUse?.total_supply?.toLocaleString("en-US")}
+              </p>
+            </div>
+            <div className="h-full w-1/2 flex justify-between flex-col items-center py-2 pt-2">
+              <p className=" text-sm text-white/50">Circulating Supply</p>
+              <p className=" pb-[50%] pt-2 text-md md:text-xl">
+                {coinUse?.circulating_supply?.toLocaleString("en-US")}
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* ----------------MarketCap------------------- */}
         {/* ----------------sparkline------------------- */}
-        <div className="  border-2 rounded-md border-white/10 w-full flex mt-4 h-[130px] items-center">
-          <div className=" h-full border-r-2 border-r-white/10 px-1 truncate text-xs flex flex-col  items-center justify-between py-2 w-[80px]">
-            <p className="text-white/50 truncate w-[60px] text-center">
+        <div className="  border-2 rounded-md border-white/10 w-full flex mt-4 h-[130px] md:h-[400px] items-center overflow-scroll scrollbar-hide ">
+          <div className=" h-full border-r-2 border-r-white/10 px-1 truncate text-xs flex flex-col  items-center justify-between py-2 w-[80px] ">
+            <p className="text-[#67dfbd]/50 truncate w-[60px] text-center">
               ${typeof allTimeHigh !== "boolean" && allTimeHigh.toFixed(2)}
             </p>
             <p className="text-white/50 truncate w-[60px] text-center">
@@ -241,45 +273,47 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
                 typeof allTimeHigh !== "boolean" &&
                 ((allTimeHigh + allTimeLow) / 2).toFixed(2)}
             </p>
-            <p className="text-white/50 truncate w-[60px] text-center">
+            <p className="text-[#ff7171]/50 truncate w-[60px] text-center">
               ${typeof allTimeLow !== "boolean" && allTimeLow.toFixed(2)}
             </p>
           </div>
-          <div className="w-full">
-            <div className=" w-full scale-y-[150%]  mx-[-2px] ">
+          <div className="w-full ">
+            <div className=" w-full scale-y-[150%] md:scale-y-100  mx-[-2px] ">
               <Sparklines data={coinUse?.sparkline_in_7d?.price}>
                 <SparklinesLine color={sparklineColor} />
               </Sparklines>
             </div>
-            <div className=" flex justify-between mt-4 -mx-2">
-              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+            <div className=" flex justify-between mt-4 -mx-2 md:mt-[-8px]">
+              <p className=" text-[6px] md:text-sm rotate-[-90deg] bg-primary ">
                 {moment().subtract(7, "days").calendar()}
               </p>
-              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+              <p className=" text-[6px] rotate-[-90deg] bg-primary md:text-sm">
                 {moment().subtract(6, "days").format("L")}
               </p>
-              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+              <p className=" text-[6px] rotate-[-90deg] bg-primary md:text-sm">
                 {moment().subtract(5, "days").format("L")}
               </p>
-              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+              <p className=" text-[6px] rotate-[-90deg] bg-primary md:text-sm">
                 {moment().subtract(4, "days").format("L")}
               </p>
-              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+              <p className=" text-[6px] rotate-[-90deg] bg-primary md:text-sm">
                 {moment().subtract(3, "days").format("L")}
               </p>
-              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+              <p className=" text-[6px] rotate-[-90deg] bg-primary md:text-sm">
                 {moment().subtract(2, "days").format("L")}
               </p>
-              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+              <p className=" text-[6px] rotate-[-90deg] bg-primary md:text-sm">
                 {moment().subtract(1, "days").format("L")}
               </p>
 
-              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+              <p className=" text-[6px] rotate-[-90deg] bg-primary md:text-sm">
                 {moment().format("L")}
               </p>
             </div>
           </div>
         </div>
+        {/* ----------------sparkline------------------- */}
+        <div className="py-2" />
       </div>
     );
   }

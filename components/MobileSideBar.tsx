@@ -23,15 +23,15 @@ export default function MobileSideBar() {
   const router = useRouter(); 
   nProgress.configure({ showSpinner: false });
 
-  // useEffect(() => {
-  //   router.push(selected.link);
-  //   Router.events.on("routeChangeStart", () => {
-  //     nProgress.start();
-  //   });
-  //   Router.events.on("routeChangeComplete", () => {
-  //     nProgress.done();
-  //   });
-  // }, [selected]);
+  useEffect(() => {
+    router.push(selected.link);
+    Router.events.on("routeChangeStart", () => {
+      nProgress.start();
+    });
+    Router.events.on("routeChangeComplete", () => {
+      nProgress.done();
+    });
+  }, [selected]);
 
   return (
     <div className=" text-white relative z-30 text-xs    ">
