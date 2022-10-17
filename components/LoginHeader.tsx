@@ -3,8 +3,15 @@ import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { BiLogIn } from "react-icons/bi";
 import { BiErrorAlt } from "react-icons/bi";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth";
 import { auth } from "../firebase/clientApp";
+import { userState } from "../recoilState/recoilState";
+import { RecoilState, useRecoilState } from "recoil";
 
 export default function LoginHeader(): JSX.Element {
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
@@ -14,6 +21,16 @@ export default function LoginHeader(): JSX.Element {
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpPass, setSignUpPass] = useState("");
 
+  // const [user, setUser] = useRecoilState(userState);
+  const [user, setUser] = useState({});
+
+  onAuthStateChanged(auth, (currentUser: any) => {
+    setUser(currentUser);
+  });
+
+
+  // console.log(user !== null && user.email);
+
   const registerFB = async (e: any) => {
     e.preventDefault();
     try {
@@ -22,11 +39,12 @@ export default function LoginHeader(): JSX.Element {
         signUpEmail,
         signUpPass
       );
-      console.log(user);
     } catch (error: any) {
       console.log(error?.message);
     }
   };
+
+  // console.log(auth.currentUser?.email)
   const loginFB = async () => {};
   const logoutFB = async () => {};
 

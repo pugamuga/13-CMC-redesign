@@ -6,6 +6,8 @@ import { SetterOrUpdater } from "recoil";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useState } from "react";
 import LoginHeader from "./LoginHeader";
+import { auth } from "../firebase/clientApp";
+
 
 interface IProps {
   openMenu: boolean;
@@ -13,7 +15,7 @@ interface IProps {
 }
 
 export default function ProfileWindowHeader({
-  openMenu,
+  openMenu, 
   setOpenMenu,
 }: IProps): JSX.Element {
   const [isLogin, setIsLogin] = useState<boolean>(false);
@@ -33,11 +35,11 @@ export default function ProfileWindowHeader({
         backdrop-blur-md  right-0 top-[50px] rounded-lg origin-top
         md:origin-top-right  p-4 w-[96%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20 min-w-[300px] "
         >
-          {isLogin ? (
+          {auth.currentUser ? (
             <>
               <div className=" flex items-center space-x-4 w-full ">
                 <div className="w-12 h-12 grad rounded-2xl superflex">U</div>
-                <p className="truncate w-44">User Najhbhjbjkbdasdsad</p>
+                <p className="truncate w-44">{auth.currentUser.email}</p>
               </div>
               <div className=" btnStyleOne">
                 <p className="text-white">Account</p>

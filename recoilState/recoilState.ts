@@ -1,3 +1,4 @@
+import { User } from "firebase/auth";
 import { atom } from "recoil";
 
 export const burgerMenuState = atom<boolean>({
