@@ -3,6 +3,7 @@ import { GetStaticPropsContext } from "next";
 import Link from "next/link";
 import { AiFillStar, AiOutlineStar, AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { Sparklines, SparklinesLine } from "react-sparklines";
 import { useRecoilState } from "recoil";
 import { coinDataState } from "../../recoilState/recoilState";
 
@@ -35,23 +36,39 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 };
 
 interface IProps {
-  coin: MainCoinData[];
+  coin: string;
 }
 
-export default function CoinPage({ coin }: any): JSX.Element {
+export default function CoinPage({ coin }: IProps): JSX.Element {
   const [coins, setCoins] = useRecoilState(coinDataState);
 
   const coinDataOnPage: MainCoinData | MainCoinData[] = coins.filter(
     (coinName: MainCoinData) => coinName.symbol === coin
   );
   const coinUse: MainCoinData = coinDataOnPage[0];
-  const mathLine =
-    (100 /
-      (coinUse?.high_24h - coinUse?.low_24h) /
-      (coinUse?.current_price - coinUse?.low_24h)) *
-    100;
+  const mathLine: number =
+    100 /
+    ((coinUse?.high_24h - coinUse?.low_24h) /
+      (coinUse?.current_price - coinUse?.low_24h));
 
-  console.log(mathLine);
+  const sparklineColor =
+    coinUse?.sparkline_in_7d?.price[0] <
+    coinUse?.sparkline_in_7d?.price[coinUse?.sparkline_in_7d?.price.length - 1]
+      ? "#67dfbd"
+      : "#ff7171";
+
+  const sparkData: number[] = coinUse?.sparkline_in_7d.price;
+  const sparkDataCopy: number[] | null =
+    sparkData !== undefined ? [...sparkData] : null;
+  const sort: number[] | boolean =
+    sparkDataCopy !== null && sparkDataCopy?.sort((a, b) => a - b);
+
+  const allTimeLow: number | boolean = typeof sort !== "boolean" && sort[0];
+  const allTimeHigh: number | boolean = typeof sort !== "boolean" && sort[sort.length-1];
+
+  console.log(allTimeLow);
+  console.log(allTimeHigh);
+
   if (coin) {
     return (
       <div className=" w-full h-full">
@@ -195,22 +212,33 @@ export default function CoinPage({ coin }: any): JSX.Element {
                 <span className="text-[#67dfbd]/50">high</span>{" "}
               </p>
               <div className=" flex justify-between w-full items-center text-xs ">
-                <p className=" w-24 truncate text-[#ff7171]">
+                <p className=" w-24 truncate text-[#ff7171] text-center">
                   {coinUse?.low_24h}
                 </p>
                 <div className=" bg-white/10 w-full mx-2 rounded-full h-4 flex items-center px-1">
                   <div
                     className="grad h-2 rounded-full "
                     style={{
-                      width: `${mathLine<100?mathLine.toFixed(0):"50"}%`,
+                      width: `${mathLine.toFixed(0)}%`,
                     }}
                   />
                 </div>
-                <p className=" w-24 truncate text-[#67dfbd]">
+                <p className=" w-24 truncate text-[#67dfbd] text-center">
                   {coinUse?.high_24h}
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+        {/* ----------------sparkline------------------- */}
+        <div className="  border-2 rounded-md border-white/10 w-full flex mt-4 h-[140px] items-center">
+          <div className=" h-full border-r-2 border-r-white/10 px-1 truncate text-xs flex justify-center py-2 w-[60px]">
+            prices
+          </div>
+          <div className=" w-full scale-y-[150%]  mx-[-2px]">
+            <Sparklines data={coinUse?.sparkline_in_7d?.price}>
+              <SparklinesLine color={sparklineColor} />
+            </Sparklines>
           </div>
         </div>
       </div>
