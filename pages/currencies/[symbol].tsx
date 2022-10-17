@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import { GetStaticPropsContext } from "next";
 import Link from "next/link";
 import { AiFillStar, AiOutlineStar, AiFillCaretDown } from "react-icons/ai";
@@ -64,10 +65,8 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
     sparkDataCopy !== null && sparkDataCopy?.sort((a, b) => a - b);
 
   const allTimeLow: number | boolean = typeof sort !== "boolean" && sort[0];
-  const allTimeHigh: number | boolean = typeof sort !== "boolean" && sort[sort.length-1];
-
-  console.log(allTimeLow);
-  console.log(allTimeHigh);
+  const allTimeHigh: number | boolean =
+    typeof sort !== "boolean" && sort[sort.length - 1];
 
   if (coin) {
     return (
@@ -231,14 +230,54 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
           </div>
         </div>
         {/* ----------------sparkline------------------- */}
-        <div className="  border-2 rounded-md border-white/10 w-full flex mt-4 h-[140px] items-center">
-          <div className=" h-full border-r-2 border-r-white/10 px-1 truncate text-xs flex justify-center py-2 w-[60px]">
-            prices
+        <div className="  border-2 rounded-md border-white/10 w-full flex mt-4 h-[130px] items-center">
+          <div className=" h-full border-r-2 border-r-white/10 px-1 truncate text-xs flex flex-col  items-center justify-between py-2 w-[80px]">
+            <p className="text-white/50 truncate w-[60px] text-center">
+              ${typeof allTimeHigh !== "boolean" && allTimeHigh.toFixed(2)}
+            </p>
+            <p className="text-white/50 truncate w-[60px] text-center">
+              $
+              {typeof allTimeLow !== "boolean" &&
+                typeof allTimeHigh !== "boolean" &&
+                ((allTimeHigh + allTimeLow) / 2).toFixed(2)}
+            </p>
+            <p className="text-white/50 truncate w-[60px] text-center">
+              ${typeof allTimeLow !== "boolean" && allTimeLow.toFixed(2)}
+            </p>
           </div>
-          <div className=" w-full scale-y-[150%]  mx-[-2px]">
-            <Sparklines data={coinUse?.sparkline_in_7d?.price}>
-              <SparklinesLine color={sparklineColor} />
-            </Sparklines>
+          <div className="w-full">
+            <div className=" w-full scale-y-[150%]  mx-[-2px] ">
+              <Sparklines data={coinUse?.sparkline_in_7d?.price}>
+                <SparklinesLine color={sparklineColor} />
+              </Sparklines>
+            </div>
+            <div className=" flex justify-between mt-4 -mx-2">
+              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+                {moment().subtract(7, "days").calendar()}
+              </p>
+              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+                {moment().subtract(6, "days").format("L")}
+              </p>
+              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+                {moment().subtract(5, "days").format("L")}
+              </p>
+              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+                {moment().subtract(4, "days").format("L")}
+              </p>
+              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+                {moment().subtract(3, "days").format("L")}
+              </p>
+              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+                {moment().subtract(2, "days").format("L")}
+              </p>
+              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+                {moment().subtract(1, "days").format("L")}
+              </p>
+
+              <p className=" text-[6px] rotate-[-90deg] bg-primary ">
+                {moment().format("L")}
+              </p>
+            </div>
           </div>
         </div>
       </div>
