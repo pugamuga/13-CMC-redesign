@@ -7,29 +7,25 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
   User,
 } from "firebase/auth";
 import { auth } from "../firebase/clientApp";
-import { userState } from "../recoilState/recoilState";
+import { loginState, userState } from "../recoilState/recoilState";
 import { RecoilState, useRecoilState } from "recoil";
 
 export default function LoginHeader(): JSX.Element {
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useRecoilState<boolean>(loginState);
+
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPass, setLoginPass] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpPass, setSignUpPass] = useState("");
 
-  // const [user, setUser] = useRecoilState(userState);
-  const [user, setUser] = useState({});
-
-  onAuthStateChanged(auth, (currentUser: any) => {
-    setUser(currentUser);
-  });
-
-
-  // console.log(user !== null && user.email);
+  
 
   const registerFB = async (e: any) => {
     e.preventDefault();
@@ -39,14 +35,26 @@ export default function LoginHeader(): JSX.Element {
         signUpEmail,
         signUpPass
       );
+     
     } catch (error: any) {
       console.log(error?.message);
     }
   };
 
   // console.log(auth.currentUser?.email)
-  const loginFB = async () => {};
-  const logoutFB = async () => {};
+  const loginFB = async (e:any) => {
+    e.preventDefault();
+    try {
+      const user = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPass
+      );
+      
+    } catch (error: any) {
+      console.log(error?.message);
+    }
+  };
 
   return (
     <>
@@ -91,7 +99,7 @@ export default function LoginHeader(): JSX.Element {
             type="email"
             placeholder="Email"
             className={`inputLogin border border-transparent ${
-              true && "border-[#ff7171]"
+              false && "border-[#ff7171]"
             } tr-300`}
           />
           {/* {errors?.email && (
@@ -113,7 +121,7 @@ export default function LoginHeader(): JSX.Element {
             type="password"
             placeholder="Password"
             className={`inputLogin border border-transparent ${
-              true && "border-[#ff7171]"
+              false && "border-[#ff7171]"
             } tr-300`}
           />
           {/* {errors?.password && (
@@ -129,7 +137,7 @@ export default function LoginHeader(): JSX.Element {
             <MdOutlineSupervisorAccount />
           </button>
         ) : (
-          <button className=" btnStyleOne text-white">
+          <button onClick={loginFB} className=" btnStyleOne text-white">
             Log In
             <BiLogIn />
           </button>

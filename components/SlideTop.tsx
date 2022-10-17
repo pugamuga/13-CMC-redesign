@@ -1,6 +1,7 @@
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useRecoilState } from "recoil";
+import { auth } from "../firebase/clientApp";
 import { coinDataState, favoriteCoin } from "../recoilState/recoilState";
 import CoinStringSlider from "./CoinStringSlider";
 import LoginHeader from "./LoginHeader";
@@ -98,7 +99,7 @@ export default function SlideTop({ name, type }: Iprops): JSX.Element {
       {/* ------------Favorites--------------- */}
       {type === "favorite" && (
         <>
-          <FavResult user={!true} coins={coins} likeCoin={likeCoin} />
+          <FavResult user={!!auth.currentUser} coins={coins} likeCoin={likeCoin} />
         </>
       )}
       {/* ------------Favorites--------------- */}

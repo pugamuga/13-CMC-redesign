@@ -2,12 +2,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoMdSettings } from "react-icons/io";
 import { BiPowerOff } from "react-icons/bi";
 import { MdAccountCircle } from "react-icons/md";
-import { SetterOrUpdater } from "recoil";
+import { SetterOrUpdater, useRecoilState } from "recoil";
 import OutsideClickHandler from "react-outside-click-handler";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginHeader from "./LoginHeader";
 import { auth } from "../firebase/clientApp";
-
+import { signOut } from "firebase/auth";
+import { loginState } from "../recoilState/recoilState";
 
 interface IProps {
   openMenu: boolean;
@@ -15,10 +16,32 @@ interface IProps {
 }
 
 export default function ProfileWindowHeader({
-  openMenu, 
+  openMenu,
   setOpenMenu,
 }: IProps): JSX.Element {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useRecoilState<boolean>(loginState);
+
+  const [justForClose, setJustForClose] = useState(false);
+
+
+  useEffect(() => {
+    if(!!auth.currentUser){
+      setJustForClose(true)
+    } else{
+      setJustForClose(false)
+    }
+  }, [auth.currentUser]);
+
+
+  useEffect(() => {
+    if(auth.currentUser){
+      setIsLogin(true)
+    }
+  }, []);
+
+  const logoutFB = async () => {
+    await signOut(auth);
+  };
   return (
     <>
       <OutsideClickHandler
@@ -35,11 +58,13 @@ export default function ProfileWindowHeader({
         backdrop-blur-md  right-0 top-[50px] rounded-lg origin-top
         md:origin-top-right  p-4 w-[96%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20 min-w-[300px] "
         >
-          {auth.currentUser ? (
+          {justForClose ? (
             <>
               <div className=" flex items-center space-x-4 w-full ">
-                <div className="w-12 h-12 grad rounded-2xl superflex">U</div>
-                <p className="truncate w-44">{auth.currentUser.email}</p>
+                <div className="w-12 h-12 grad rounded-2xl superflex">
+                  {auth?.currentUser?.email?.split("")[0].toUpperCase()}
+                </div>
+                <p className="truncate w-44">{auth?.currentUser?.email}</p>
               </div>
               <div className=" btnStyleOne">
                 <p className="text-white">Account</p>
@@ -50,7 +75,10 @@ export default function ProfileWindowHeader({
                 <IoMdSettings />
               </div>
 
-              <div className=" btnStyleOne">
+              <div
+                onClick={logoutFB}
+                className=" btnStyleOne"
+              >
                 <p className="text-white">Log out</p>
                 <BiPowerOff />
               </div>

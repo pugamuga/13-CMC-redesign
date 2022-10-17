@@ -45,5 +45,10 @@ export const userState = atom<any>({
   default: null,
 });
 
+export const loginState = atom<boolean>({
+  key: "loginState",
+  default: false,
+});
+
 
 
