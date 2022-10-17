@@ -19,41 +19,60 @@ export default function LoginHeader(): JSX.Element {
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
   const [isLogin, setIsLogin] = useRecoilState<boolean>(loginState);
 
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPass, setInputPass] = useState("");
 
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPass, setLoginPass] = useState("");
-  const [signUpEmail, setSignUpEmail] = useState("");
-  const [signUpPass, setSignUpPass] = useState("");
+  const [noEmail, setNoEmail] = useState(false);
+  const [noPass, setNoPass] = useState(false);
 
-  
+  const [inputError, setinputError] = useState<
+    "password wrong" | "password less 6" | "user already exist" | null
+  >(null);
+
+  console.log(inputError);
 
   const registerFB = async (e: any) => {
+    if (inputEmail === "") {
+      setNoEmail(true);
+    }
+    if (inputPass === "") {
+      setNoPass(true);
+    }
+    if (Array.from(inputPass).length > 6) {
+      setinputError("password less 6");
+    }
     e.preventDefault();
     try {
       const user = await createUserWithEmailAndPassword(
         auth,
-        signUpEmail,
-        signUpPass
+        inputEmail,
+        inputPass
       );
-     
     } catch (error: any) {
-      console.log(error?.message);
+      setinputError("user already exist");
     }
+    return setIsLogin(false);
   };
 
   // console.log(auth.currentUser?.email)
-  const loginFB = async (e:any) => {
+  const loginFB = async (e: any) => {
+    if (inputEmail === "") {
+      setNoEmail(true);
+    }
+    if (inputPass === "") {
+      setNoPass(true);
+    }
     e.preventDefault();
     try {
       const user = await signInWithEmailAndPassword(
         auth,
-        loginEmail,
-        loginPass
+        inputEmail,
+        inputPass
       );
-      
     } catch (error: any) {
-      console.log(error?.message);
+      setinputError("password wrong");
     }
+    return setIsLogin(true);
   };
 
   return (
@@ -90,11 +109,8 @@ export default function LoginHeader(): JSX.Element {
         <div className="w-full relative">
           <input
             onChange={(e) => {
-              if (isSignUp) {
-                setSignUpEmail(e.target.value);
-              } else {
-                setLoginEmail(e.target.value);
-              }
+              setInputEmail(e.target.value);
+              setNoEmail(false);
             }}
             type="email"
             placeholder="Email"
@@ -102,21 +118,18 @@ export default function LoginHeader(): JSX.Element {
               false && "border-[#ff7171]"
             } tr-300`}
           />
-          {/* {errors?.email && (
+          {noEmail && (
             <div className=" flex space-x-2 items-center bg-[#ff7171] absolute top-0 bottom-0 my-auto right-2 px-2 h-7 rounded-lg ">
               <BiErrorAlt />
               <p className=" text-xs">Email required</p>
             </div>
-          )} */}
+          )}
         </div>
         <div className="w-full relative">
           <input
             onChange={(e) => {
-              if (isSignUp) {
-                setSignUpPass(e.target.value);
-              } else {
-                setLoginPass(e.target.value);
-              }
+              setInputPass(e.target.value);
+              setNoPass(false);
             }}
             type="password"
             placeholder="Password"
@@ -124,12 +137,12 @@ export default function LoginHeader(): JSX.Element {
               false && "border-[#ff7171]"
             } tr-300`}
           />
-          {/* {errors?.password && (
+          {noPass && (
             <div className=" flex space-x-2 items-center bg-[#ff7171] absolute top-0 bottom-0 my-auto right-2 px-2 h-7 rounded-lg ">
               <BiErrorAlt />
               <p className=" text-xs">Password required</p>
             </div>
-          )} */}
+          )}
         </div>
         {isSignUp ? (
           <button onClick={registerFB} className=" btnStyleOne text-white">

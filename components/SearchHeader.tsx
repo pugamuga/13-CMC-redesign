@@ -26,7 +26,6 @@ export default function SearchHeader({
     );
   });
 
-  console.log(resultArray);
 
   return (
     <motion.div
