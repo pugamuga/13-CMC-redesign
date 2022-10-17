@@ -3,13 +3,14 @@ import type { NextPage } from "next";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import CoinString from "../components/CoinString";
-import { coinDataState } from "../recoilState/recoilState";
+import { coinDataState, userState } from "../recoilState/recoilState";
 import moment from "moment";
 import MobileSlider from "../components/MobileSlider";
 import DesktopSlider from "../components/DesktopSlider";
 import PagesAmountAtTime from "../components/PagesAmountAtTime";
 import { FiChevronsDown } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import app from "../firebase/clientApp";
 
 interface IProps {
   data: MainCoinData[] | [];
@@ -23,6 +24,10 @@ const Home = ({ data }: IProps): JSX.Element => {
   const [currentTime, setCurrentTime] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [amountPagesShown, setAmountPagesShown] = useState(10);
+
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
+
+  
 
   const lastTimeUpdatePrice: string =
     coins[0] && Array.from(coins[1]?.last_updated).slice(11, 19).join("");

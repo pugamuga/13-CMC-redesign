@@ -39,4 +39,10 @@ export const favoriteCoin = atom<boolean>({
 });
 
 
+export const userState = atom<any>({
+  key: "userState",
+  default: null,
+});
+
+
 

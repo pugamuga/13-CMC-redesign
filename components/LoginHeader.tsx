@@ -3,19 +3,32 @@ import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { BiLogIn } from "react-icons/bi";
 import { BiErrorAlt } from "react-icons/bi";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/clientApp";
 
 export default function LoginHeader(): JSX.Element {
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPass, setLoginPass] = useState("");
+  const [signUpEmail, setSignUpEmail] = useState("");
+  const [signUpPass, setSignUpPass] = useState("");
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const registerFB = async (e: any) => {
+    e.preventDefault();
+    try {
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        signUpEmail,
+        signUpPass
+      );
+      console.log(user);
+    } catch (error: any) {
+      console.log(error?.message);
+    }
   };
+  const loginFB = async () => {};
+  const logoutFB = async () => {};
 
   return (
     <>
@@ -47,51 +60,58 @@ export default function LoginHeader(): JSX.Element {
           ></div>
         </div>
       </div>
-      <form
-        onSubmit={handleSubmit((data: any) => {
-          onSubmit(data);
-        })}
-        className="w-full flex flex-col space-y-4 pt-4"
-      >
+      <form className="w-full flex flex-col space-y-4 pt-4">
         <div className="w-full relative">
           <input
-            {...register("email", { required: true })}
+            onChange={(e) => {
+              if (isSignUp) {
+                setSignUpEmail(e.target.value);
+              } else {
+                setLoginEmail(e.target.value);
+              }
+            }}
             type="email"
             placeholder="Email"
             className={`inputLogin border border-transparent ${
-              errors?.email && "border-[#ff7171]"
+              true && "border-[#ff7171]"
             } tr-300`}
           />
-          {errors?.email && (
+          {/* {errors?.email && (
             <div className=" flex space-x-2 items-center bg-[#ff7171] absolute top-0 bottom-0 my-auto right-2 px-2 h-7 rounded-lg ">
               <BiErrorAlt />
               <p className=" text-xs">Email required</p>
             </div>
-          )}
+          )} */}
         </div>
         <div className="w-full relative">
           <input
-            {...register("password", { required: true })}
+            onChange={(e) => {
+              if (isSignUp) {
+                setSignUpPass(e.target.value);
+              } else {
+                setLoginPass(e.target.value);
+              }
+            }}
             type="password"
             placeholder="Password"
             className={`inputLogin border border-transparent ${
-              errors?.password && "border-[#ff7171]"
+              true && "border-[#ff7171]"
             } tr-300`}
           />
-          {errors?.password && (
+          {/* {errors?.password && (
             <div className=" flex space-x-2 items-center bg-[#ff7171] absolute top-0 bottom-0 my-auto right-2 px-2 h-7 rounded-lg ">
               <BiErrorAlt />
               <p className=" text-xs">Password required</p>
             </div>
-          )}
+          )} */}
         </div>
         {isSignUp ? (
-          <button type="submit" className=" btnStyleOne text-white">
+          <button onClick={registerFB} className=" btnStyleOne text-white">
             Create account
             <MdOutlineSupervisorAccount />
           </button>
         ) : (
-          <button type="submit" className=" btnStyleOne text-white">
+          <button className=" btnStyleOne text-white">
             Log In
             <BiLogIn />
           </button>
