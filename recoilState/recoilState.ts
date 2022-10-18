@@ -51,4 +51,12 @@ export const loginState = atom<boolean>({
 });
 
 
+export const globalStar = atom<any>({
+  key: "globalStar",
+  default: [],
+});
+
+
+
+
 

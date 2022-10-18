@@ -29,7 +29,6 @@ export default function LoginHeader(): JSX.Element {
     "password or email wrong" | "password less 6" | "user already exist" | null
   >(null);
 
-  console.log(inputError);
 
   useEffect(() => {
     setinputError(null);

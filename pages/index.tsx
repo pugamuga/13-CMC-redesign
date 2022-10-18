@@ -1,6 +1,4 @@
-import axios from "axios";
-import type { NextPage } from "next";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import CoinString from "../components/CoinString";
 import { coinDataState, userState } from "../recoilState/recoilState";
@@ -9,8 +7,10 @@ import MobileSlider from "../components/MobileSlider";
 import DesktopSlider from "../components/DesktopSlider";
 import PagesAmountAtTime from "../components/PagesAmountAtTime";
 import { FiChevronsDown } from "react-icons/fi";
-import { motion, AnimatePresence } from "framer-motion";
-import app from "../firebase/clientApp";
+import { AnimatePresence } from "framer-motion";
+import {db} from "../firebase/clientApp"
+import {uid} from "uid"
+
 
 interface IProps {
   data: MainCoinData[] | [];
