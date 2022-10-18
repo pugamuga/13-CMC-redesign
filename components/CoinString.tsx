@@ -15,7 +15,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
   const [likeCoin, setLikeCoin] = useRecoilState(favoriteCoin);
   const [star, setStar] = useRecoilState(globalStar);
 
-  // console.log(star)
+  console.log(star);
 
   const sparklineColor =
     coin.sparkline_in_7d.price[0] <
@@ -23,10 +23,18 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       ? "#67dfbd"
       : "#ff7171";
 
+  const handleDeleteStar = () => {
+    const deleteStar = [...star].filter((star: string) => star !== coin.id);
+    setStar([...deleteStar]);
+  };
+  const handleAddStar = () => {
+    setStar([...star, coin.id]);
+  };
+
   return (
     <motion.div
       layout
-      className=" w-full grad-50 py-2 px-2 md:px-4 rounded-md flex items-center cursor-pointer hover:scale-x-[101%] 
+      className=" w-full grad-50 py-2 px-2 md:px-4 rounded-md flex items-center  hover:scale-x-[101%] group
       border-[2px] hover:border-white/20 border-white/0 tr-300"
     >
       {/* ----------------------- */}
@@ -35,13 +43,14 @@ export default function CoinString({ coin }: IProps): JSX.Element {
         id="name"
       >
         {star.includes(coin.id) ? (
-          <AiFillStar className="text-2xl md:text-[40px] hover:scale-110 tr-300 text-violet-500 md:w-16 " />
+          <AiFillStar
+            className="text-2xl md:text-[40px] hover:scale-110 tr-300 text-violet-500 md:w-16  cursor-pointer "
+            onClick={handleDeleteStar}
+          />
         ) : (
           <AiOutlineStar
-            className=" md:w-16 text-2xl md:text-[40px] hover:scale-110 tr-300 opacity-50"
-            onClick={() => {
-              setStar([...star, coin.id]);
-            }}
+            className=" md:w-16 text-2xl md:text-[40px] hover:scale-110 tr-300 opacity-50 cursor-pointer"
+            onClick={handleAddStar}
           />
         )}
         <p className="md:text-sm text-xs text-center w-12">
@@ -58,7 +67,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       {/* ----------------------- */}
       <Link href={`/currencies/${coin.symbol}`}>
         <div
-          className="md:w-[40%] w-[30%] flex items-center justify-center md:justify-between md:px-12 bg-primary/60 py-2 tr-300 -my-2 rounded-md md:bg-primary/0 md:hover:bg-primary/60"
+          className="md:w-[40%] cursor-pointer w-[30%] flex items-center justify-center md:justify-between md:px-12 bg-primary/60 py-2 tr-300 -my-2 rounded-md md:bg-primary/0 md:group-hover:bg-primary/60"
           id="price"
         >
           <p className=" md:inline hidden">{coin.symbol.toUpperCase()}</p>
