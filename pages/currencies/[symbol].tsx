@@ -2,11 +2,12 @@ import axios from "axios";
 import moment from "moment";
 import { GetStaticPropsContext } from "next";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { AiFillStar, AiOutlineStar, AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { useRecoilState } from "recoil";
-import { coinDataState } from "../../recoilState/recoilState";
+import { coinDataState, globalStar } from "../../recoilState/recoilState";
 
 const coinGeckoUrl =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true";
@@ -42,6 +43,7 @@ interface IProps {
 
 export default function CoinPage({ coin }: IProps): JSX.Element {
   const [coins, setCoins] = useRecoilState(coinDataState);
+  const [star, setStar] = useRecoilState(globalStar);
 
   const coinDataOnPage: MainCoinData | MainCoinData[] = coins.filter(
     (coinName: MainCoinData) => coinName.symbol === coin
@@ -68,9 +70,23 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
   const allTimeHigh: number | boolean =
     typeof sort !== "boolean" && sort[sort.length - 1];
 
+  const handleDeleteStar = () => {
+    const deleteStar = [...star].filter((star: string) => star !== coinUse?.id);
+    setStar([...deleteStar]);
+  };
+  const handleAddStar = () => {
+    setStar([...star, coinUse?.id]);
+  };
+
+  const bodyRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+
+  useEffect(() => {
+    bodyRef.current.scrollTo(0, 0);
+  }, []);
+
   if (coin) {
     return (
-      <div className=" w-full h-full pb-4 ">
+      <div ref={bodyRef} className=" w-full h-full pb-4 ">
         <Link href={"/"}>
           <div className=" flex w-[80px] md:w-[80px] items-center cursor-pointer space-x-2 bg-violet-700/0 hover:bg-violet-700/40 tr-300 rounded-md pl-1  py-1">
             <IoIosArrowRoundBack className="text-xl" />
@@ -91,10 +107,16 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
                     {coinUse?.symbol.toUpperCase()}
                   </div>
                 </div>
-                {true ? (
-                  <AiFillStar className="text-3xl md:text-[40px] hover:scale-110 tr-300 text-violet-500  " />
+                {star.includes(coinUse?.id) ? (
+                  <AiFillStar
+                    className="text-3xl md:text-[40px] hover:scale-110 tr-300 text-violet-500  cursor-pointer "
+                    onClick={handleDeleteStar}
+                  />
                 ) : (
-                  <AiOutlineStar className="text-3xl md:text-[40px] hover:scale-110 tr-300 opacity-50" />
+                  <AiOutlineStar
+                    className="text-3xl md:text-[40px] hover:scale-110 tr-300 opacity-50 cursor-pointer"
+                    onClick={handleAddStar}
+                  />
                 )}
               </div>
               <div className=" mt-4 text-xs md:text-xl grad-150 text-white px-2 py-1 rounded-md text-center w-[80px] md:w-[140px] ">
@@ -234,31 +256,39 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
         {/* ----------------MarketCap------------------- */}
         <div className="border-2 rounded-md border-white/10 w-full flex flex-col mt-4 p-2 h-[200px] divide-y-[2px] divide-white/10 ">
           <div className=" w-full h-1/2 divide-x-[2px] divide-white/10 flex">
-            <div className="h-full w-1/2 flex justify-between flex-col items-center py-2 ">
+            <div className="h-full w-1/2 flex justify-center flex-col items-center ">
               <p className=" text-sm text-white/50">Market Cap</p>
-              <p className=" pb-[50%] pt-2 text-md md:text-xl">
-                ${coinUse?.market_cap?.toLocaleString("en-US")}
-              </p>
+              {coinUse?.market_cap?<p className=" pt-2 text-sm md:text-xl">
+                ${coinUse.market_cap.toLocaleString("en-US")}
+              </p>:( 
+                <p className=" text-md text-white/50">No data</p>
+              )}
             </div>
-            <div className="h-full w-1/2 flex justify-between flex-col items-center py-2 ">
+            <div className="h-full w-1/2 flex justify-center flex-col items-center ">
               <p className=" text-sm text-white/50">Volume 24h</p>
-              <p className=" pb-[50%] pt-2 text-md md:text-xl">
-                ${coinUse?.total_volume?.toLocaleString("en-US")}
-              </p>
+              {coinUse?.total_volume?<p className="  pt-2 text-sm md:text-xl">
+                ${coinUse.total_volume.toLocaleString("en-US")}
+              </p>:( 
+                <p className=" text-md text-white/50">No data</p>
+              )}
             </div>
           </div>
           <div className=" w-full h-1/2 divide-x-[2px] divide-white/10 flex">
-            <div className="h-full w-1/2 flex justify-between flex-col items-center py-2 pt-2">
+            <div className="h-full w-1/2 flex justify-center flex-col items-center  pt-2">
               <p className=" text-sm text-white/50">Total Supply</p>
-              <p className=" pb-[50%] pt-2 text-md md:text-xl">
-                {coinUse?.total_supply?.toLocaleString("en-US")}
-              </p>
+              {coinUse?.total_supply?<p className="  pt-2 text-sm md:text-xl">
+                {coinUse.total_supply.toLocaleString("en-US")}
+              </p>:( 
+                <p className=" text-md text-white/50">No data</p>
+              )}
             </div>
-            <div className="h-full w-1/2 flex justify-between flex-col items-center py-2 pt-2">
+            <div className="h-full w-1/2 flex justify-center flex-col items-center pt-2">
               <p className=" text-sm text-white/50">Circulating Supply</p>
-              <p className=" pb-[50%] pt-2 text-md md:text-xl">
-                {coinUse?.circulating_supply?.toLocaleString("en-US")}
-              </p>
+              {coinUse?.circulating_supply?<p className=" pt-2 text-sm md:text-xl">
+                {coinUse.circulating_supply.toLocaleString("en-US")}
+              </p>:( 
+                <p className=" text-md text-white/50">No data</p>
+              )}
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Head from "next/head";
 import SideBar from "./SideBar";
@@ -24,6 +24,19 @@ export default function Layout({ children }: IProps): JSX.Element {
     };
   }, []);
 
+  const bodyRef:any = useRef(null)
+
+  
+
+useEffect(() => {
+  const div = bodyRef.current
+  div.scrollTo({
+    top: 0,
+    left: 0,
+  });
+});
+
+
   useEffect(() => {}, [userHeight]);
   return (
     <>
@@ -35,7 +48,7 @@ export default function Layout({ children }: IProps): JSX.Element {
       </Head>
       <Header />
       <SideBar />
-      <div style={{ height: `${userHeight - 76}px` }} className="bodyPart ">
+      <div ref={bodyRef} style={{ height: `${userHeight - 76}px` }} className="bodyPart ">
         {children}
       </div>
     </>
