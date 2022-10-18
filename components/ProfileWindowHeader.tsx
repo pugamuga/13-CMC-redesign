@@ -26,7 +26,7 @@ export default function ProfileWindowHeader({
     if(auth.currentUser){
       setIsLogin(true)
     }
-  }, [isLogin]);
+  }, );
 
   const logoutFB = async () => {
     await signOut(auth);
@@ -48,7 +48,7 @@ export default function ProfileWindowHeader({
         backdrop-blur-md  right-0 top-[50px] rounded-lg origin-top
         md:origin-top-right  p-4 w-[96%] md:w-[25%] left-0 mx-auto md:mx-0 md:right-12 md:left-auto z-20 min-w-[300px] "
         >
-          {isLogin ? (
+          {(isLogin || auth.currentUser) && openMenu ? (
             <>
               <div className=" flex items-center space-x-4 w-full ">
                 <div className="w-12 h-12 grad rounded-2xl superflex">

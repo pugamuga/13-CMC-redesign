@@ -26,10 +26,14 @@ export default function LoginHeader(): JSX.Element {
   const [noPass, setNoPass] = useState(false);
 
   const [inputError, setinputError] = useState<
-    "password wrong" | "password less 6" | "user already exist" | null
+    "password or email wrong" | "password less 6" | "user already exist" | null
   >(null);
 
   console.log(inputError);
+
+  useEffect(() => {
+    setinputError(null);
+  }, [inputEmail, inputPass]);
 
   const registerFB = async (e: any) => {
     if (inputEmail === "") {
@@ -38,9 +42,7 @@ export default function LoginHeader(): JSX.Element {
     if (inputPass === "") {
       setNoPass(true);
     }
-    if (Array.from(inputPass).length > 6) {
-      setinputError("password less 6");
-    }
+
     e.preventDefault();
     try {
       const user = await createUserWithEmailAndPassword(
@@ -48,10 +50,11 @@ export default function LoginHeader(): JSX.Element {
         inputEmail,
         inputPass
       );
+      setIsLogin(true);
     } catch (error: any) {
       setinputError("user already exist");
     }
-    return setIsLogin(false);
+    
   };
 
   // console.log(auth.currentUser?.email)
@@ -69,10 +72,10 @@ export default function LoginHeader(): JSX.Element {
         inputEmail,
         inputPass
       );
+      setIsLogin(true);
     } catch (error: any) {
-      setinputError("password wrong");
+      setinputError("password or email wrong");
     }
-    return setIsLogin(true);
   };
 
   return (
@@ -82,6 +85,9 @@ export default function LoginHeader(): JSX.Element {
           className="relative cursor-pointer"
           onClick={() => {
             setIsSignUp(true);
+            setNoPass(false);
+            setNoEmail(false);
+            setinputError(null);
           }}
         >
           <p>Sign Up</p>
@@ -95,6 +101,9 @@ export default function LoginHeader(): JSX.Element {
           className="relative cursor-pointer"
           onClick={() => {
             setIsSignUp(false);
+            setNoPass(false);
+            setNoEmail(false);
+            setinputError(null);
           }}
         >
           <p>Log In</p>
@@ -115,13 +124,18 @@ export default function LoginHeader(): JSX.Element {
             type="email"
             placeholder="Email"
             className={`inputLogin border border-transparent ${
-              false && "border-[#ff7171]"
+              noEmail && "border-[#ff7171]"
             } tr-300`}
           />
           {noEmail && (
             <div className=" flex space-x-2 items-center bg-[#ff7171] absolute top-0 bottom-0 my-auto right-2 px-2 h-7 rounded-lg ">
               <BiErrorAlt />
               <p className=" text-xs">Email required</p>
+            </div>
+          )}
+          {!Array.from(inputEmail).includes("@") && inputEmail !== "" && (
+            <div className=" absolute bottom-[-10px] right-4 bg-[#ff7171]  px-2 rounded-md text-xs py-1 ">
+              {!Array.from(inputEmail).includes("@") && "Email should have @"}
             </div>
           )}
         </div>
@@ -134,13 +148,21 @@ export default function LoginHeader(): JSX.Element {
             type="password"
             placeholder="Password"
             className={`inputLogin border border-transparent ${
-              false && "border-[#ff7171]"
+              noPass && "border-[#ff7171]"
             } tr-300`}
           />
           {noPass && (
             <div className=" flex space-x-2 items-center bg-[#ff7171] absolute top-0 bottom-0 my-auto right-2 px-2 h-7 rounded-lg ">
               <BiErrorAlt />
               <p className=" text-xs">Password required</p>
+            </div>
+          )}
+          {((inputError === "password or email wrong" && inputPass !== "") ||
+            inputError === "user already exist"&& inputPass !== "") && (
+            <div className=" absolute bottom-[-10px] right-4 bg-[#ff7171]  px-2 rounded-md text-xs py-1 ">
+              {inputError === "password or email wrong" &&
+                "Password or Email wrong"}
+              {inputError === "user already exist" && "Account already exist"}
             </div>
           )}
         </div>
