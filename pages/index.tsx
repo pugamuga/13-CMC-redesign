@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import CoinString from "../components/CoinString";
-import { coinDataState, userState } from "../recoilState/recoilState";
+import {
+  coinDataState,
+  currentUserId,
+  globalStar,
+  userState,
+} from "../recoilState/recoilState";
 import moment from "moment";
 import MobileSlider from "../components/MobileSlider";
 import DesktopSlider from "../components/DesktopSlider";
 import PagesAmountAtTime from "../components/PagesAmountAtTime";
 import { FiChevronsDown } from "react-icons/fi";
 import { AnimatePresence } from "framer-motion";
-import {db} from "../firebase/clientApp"
-import {uid} from "uid"
-
+import { auth, db } from "../firebase/clientApp";
+import { uid } from "uid";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 
 interface IProps {
   data: MainCoinData[] | [];
@@ -24,10 +29,43 @@ const Home = ({ data }: IProps): JSX.Element => {
   const [currentTime, setCurrentTime] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [amountPagesShown, setAmountPagesShown] = useState(10);
+  const [star, setStar] = useRecoilState(globalStar);
+  const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
 
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const [users, setUsers] = useState<any>([]);
+  const userCollectionRef = collection(db, "users");
 
-  
+  // console.log(idOfcurrentUser);
+
+  useEffect(() => {
+    if (auth.currentUser && users) {
+      const currentEmail = auth.currentUser.email;
+      const currentObj = users.filter(
+        (user: any) => user.email?.toLowerCase() === currentEmail?.toLowerCase()
+      );
+      setIdOfCurrentUser(currentObj[0]?.id);
+    } else {
+      setIdOfCurrentUser(null);
+    }
+  }, [users, auth.currentUser]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getUsers();
+  }, []);
+
+  // useEffect(() => {
+  //   const updateStarsForUser = async (id: string, stars: string[]) => {
+  //     const userDoc = doc(db, "users", id);
+  //     const newData = { stars: star };
+  //     await updateDoc(userDoc, newData);
+  //   };
+
+  //   updateStarsForUser("ow9AgQI0DEU3HzgJA2qm", star);
+  // }, [star]);
 
   const lastTimeUpdatePrice: string =
     coins[0] && Array.from(coins[1]?.last_updated).slice(11, 19).join("");
@@ -40,7 +78,7 @@ const Home = ({ data }: IProps): JSX.Element => {
   }, [currentTime]);
 
   useEffect(() => {
-    if(data){
+    if (data) {
       setCoins(data);
     }
   }, []);
@@ -77,14 +115,15 @@ const Home = ({ data }: IProps): JSX.Element => {
       </div>
       <div className=" flex flex-col w-full space-y-2 items-center  ">
         <AnimatePresence>
-          {coins.length>0&& coins
-            .slice(
-              currentPage * amountPagesShown - amountPagesShown,
-              currentPage * amountPagesShown
-            )
-            .map((coin: MainCoinData, id: number) => {
-              return <CoinString key={id} coin={coin} />;
-            })}
+          {coins.length > 0 &&
+            coins
+              .slice(
+                currentPage * amountPagesShown - amountPagesShown,
+                currentPage * amountPagesShown
+              )
+              .map((coin: MainCoinData, id: number) => {
+                return <CoinString key={id} coin={coin} />;
+              })}
         </AnimatePresence>
       </div>
       <div className=" flex items-center">
@@ -155,11 +194,11 @@ const Home = ({ data }: IProps): JSX.Element => {
 export default Home;
 
 export const getServerSideProps = async () => {
-    const responce = await fetch(coinGeckoUrl);
-    const data = await responce.json()
-    return {
-      props: {
-        data: data
-      },
-    };
+  const responce = await fetch(coinGeckoUrl);
+  const data = await responce.json();
+  return {
+    props: {
+      data: data,
+    },
+  };
 };

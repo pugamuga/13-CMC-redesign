@@ -11,9 +11,10 @@ import {
   signOut,
   User,
 } from "firebase/auth";
-import { auth } from "../firebase/clientApp";
+import { auth, db } from "../firebase/clientApp";
 import { loginState, userState } from "../recoilState/recoilState";
 import { RecoilState, useRecoilState } from "recoil";
+import { addDoc, collection } from "firebase/firestore";
 
 export default function LoginHeader(): JSX.Element {
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
@@ -28,6 +29,8 @@ export default function LoginHeader(): JSX.Element {
   const [inputError, setinputError] = useState<
     "password or email wrong" | "password less 6" | "user already exist" | null
   >(null);
+
+  const userCollectionRef = collection(db, "users")
 
 
   useEffect(() => {
@@ -50,6 +53,10 @@ export default function LoginHeader(): JSX.Element {
         inputPass
       );
       setIsLogin(true);
+      const addUserToDb = async()=>{
+        await addDoc(userCollectionRef, {email:inputEmail, stars:[]})
+      }
+      addUserToDb()
     } catch (error: any) {
       setinputError("user already exist");
     }

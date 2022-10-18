@@ -4,8 +4,14 @@ import { useState } from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { useRecoilState } from "recoil";
-import { favoriteCoin, globalStar } from "../recoilState/recoilState";
+import {
+  currentUserId,
+  favoriteCoin,
+  globalStar,
+} from "../recoilState/recoilState";
 import { motion, AnimatePresence } from "framer-motion";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/clientApp";
 
 interface IProps {
   coin: MainCoinData;
@@ -13,6 +19,7 @@ interface IProps {
 
 export default function CoinString({ coin }: IProps): JSX.Element {
   const [star, setStar] = useRecoilState(globalStar);
+  const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
 
   const sparklineColor =
     coin.sparkline_in_7d.price[0] <
@@ -26,6 +33,21 @@ export default function CoinString({ coin }: IProps): JSX.Element {
   };
   const handleAddStar = () => {
     setStar([...star, coin.id]);
+  };
+
+  const addToDatabaseStar = async () => {
+    if (idOfcurrentUser !== null) {
+      const userDoc = doc(db, "users", idOfcurrentUser);
+      const newData = { stars: [coin.id] };
+      await updateDoc(userDoc, newData);
+    }
+  };
+  const deleteDatabaseStar = async () => {
+    if (idOfcurrentUser !== null) {
+      const userDoc = doc(db, "users", idOfcurrentUser);
+      const newData = { stars: [] };
+      await updateDoc(userDoc, newData);
+    }
   };
 
   return (

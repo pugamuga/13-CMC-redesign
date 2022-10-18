@@ -33,12 +33,10 @@ export const coinDataState = atom<MainCoinData[] | []>({
   default: [],
 });
 
-
 export const favoriteCoin = atom<boolean>({
   key: "favoriteCoin",
   default: false,
 });
-
 
 export const userState = atom<any>({
   key: "userState",
@@ -50,13 +48,12 @@ export const loginState = atom<boolean>({
   default: false,
 });
 
-
 export const globalStar = atom<any>({
   key: "globalStar",
   default: [],
 });
 
-
-
-
-
+export const currentUserId = atom<string|null>({
+  key: "currentUserId",
+  default: null,
+});
