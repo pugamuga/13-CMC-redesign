@@ -5,6 +5,7 @@ import {
   coinDataState,
   currentUserId,
   globalStar,
+  refreshState,
   userState,
 } from "../recoilState/recoilState";
 import moment from "moment";
@@ -31,23 +32,31 @@ const Home = ({ data }: IProps): JSX.Element => {
   const [amountPagesShown, setAmountPagesShown] = useState(10);
   const [star, setStar] = useRecoilState(globalStar);
   const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
+  const [refresh, setRefresh] = useRecoilState(refreshState);
 
   const [users, setUsers] = useState<any>([]);
   const userCollectionRef = collection(db, "users");
 
   // console.log(idOfcurrentUser);
+useEffect(() => {
+  setStar(idOfcurrentUser?.stars)
+},[]);
+ 
 
   useEffect(() => {
-    if (auth.currentUser && users) {
-      const currentEmail = auth.currentUser.email;
+    if (auth.currentUser) {
+    const currentEmail = auth.currentUser.email;
       const currentObj = users.filter(
         (user: any) => user.email?.toLowerCase() === currentEmail?.toLowerCase()
       );
-      setIdOfCurrentUser(currentObj[0]?.id);
+      
+      setIdOfCurrentUser(currentObj[0]);
+      setStar(currentObj[0]?.stars)
+      
     } else {
       setIdOfCurrentUser(null);
     }
-  }, [users, auth.currentUser]);
+  }, [users, auth.currentUser,refresh]);
 
   useEffect(() => {
     const getUsers = async () => {

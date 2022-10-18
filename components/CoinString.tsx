@@ -8,6 +8,7 @@ import {
   currentUserId,
   favoriteCoin,
   globalStar,
+  refreshState,
 } from "../recoilState/recoilState";
 import { motion, AnimatePresence } from "framer-motion";
 import { doc, updateDoc } from "firebase/firestore";
@@ -20,6 +21,9 @@ interface IProps {
 export default function CoinString({ coin }: IProps): JSX.Element {
   const [star, setStar] = useRecoilState(globalStar);
   const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
+  const [refresh, setRefresh] = useRecoilState(refreshState);
+
+  // console.log(star)
 
   const sparklineColor =
     coin.sparkline_in_7d.price[0] <
@@ -27,27 +31,29 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       ? "#67dfbd"
       : "#ff7171";
 
-  const handleDeleteStar = () => {
-    const deleteStar = [...star].filter((star: string) => star !== coin.id);
-    setStar([...deleteStar]);
-  };
-  const handleAddStar = () => {
-    setStar([...star, coin.id]);
-  };
+  // const handleDeleteStar = () => {
+  //   const deleteStar = [...star].filter((star: string) => star !== coin.id);
+  //   setStar([...deleteStar]);
+  // };
+  // const handleAddStar = () => {
+  //   setStar([...star, coin.id]);
+  // };
 
   const addToDatabaseStar = async () => {
-    if (idOfcurrentUser !== null) {
-      const userDoc = doc(db, "users", idOfcurrentUser);
-      const newData = { stars: [coin.id] };
+    if (idOfcurrentUser?.id !== null) {
+      const userDoc = await doc(db, "users", idOfcurrentUser.id);
+      const newData = { stars: [...star, coin.id] };
       await updateDoc(userDoc, newData);
     }
+    setRefresh(!refresh);
   };
   const deleteDatabaseStar = async () => {
-    if (idOfcurrentUser !== null) {
-      const userDoc = doc(db, "users", idOfcurrentUser);
-      const newData = { stars: [] };
+    if (idOfcurrentUser?.id !== null) {
+      const userDoc = await doc(db, "users", idOfcurrentUser.id);
+      const newData = { stars: star.filter((i: string) => i !== coin.id) };
       await updateDoc(userDoc, newData);
     }
+    setRefresh(!refresh);
   };
 
   return (
@@ -57,15 +63,15 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       border-[2px] hover:border-white/20 border-white/0 tr-300"
     >
       <div className=" absolute top-1/2 left-1 transform  -translate-y-1/2 z-10 cursor-pointer ">
-        {star.includes(coin.id) ? (
+        {star?.includes(coin.id) ? (
           <AiFillStar
             className="text-xl md:text-[30px] hover:scale-110 tr-300 text-violet-500 md:w-16  cursor-pointer "
-            onClick={handleDeleteStar}
+            onClick={deleteDatabaseStar}
           />
         ) : (
           <AiOutlineStar
             className=" md:w-16 text-xl md:text-[30px] hover:scale-110 tr-300 opacity-50 cursor-pointer"
-            onClick={handleAddStar}
+            onClick={addToDatabaseStar}
           />
         )}
       </div>

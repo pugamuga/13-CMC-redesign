@@ -53,7 +53,12 @@ export const globalStar = atom<any>({
   default: [],
 });
 
-export const currentUserId = atom<string|null>({
+export const currentUserId = atom<any>({
   key: "currentUserId",
   default: null,
+});
+
+export const refreshState = atom<boolean>({
+  key: "refreshState",
+  default: false,
 });
