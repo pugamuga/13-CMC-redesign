@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import LoginHeader from "./LoginHeader";
 import { auth } from "../firebase/clientApp";
 import { signOut } from "firebase/auth";
-import { loginState } from "../recoilState/recoilState";
+import { loginState, refreshState } from "../recoilState/recoilState";
 
 interface IProps {
   openMenu: boolean;
@@ -20,17 +20,18 @@ export default function ProfileWindowHeader({
   setOpenMenu,
 }: IProps): JSX.Element {
   const [isLogin, setIsLogin] = useRecoilState<boolean>(loginState);
-
+  const [refresh, setRefresh] = useRecoilState(refreshState);
 
   useEffect(() => {
-    if(auth.currentUser){
-      setIsLogin(true)
+    if (auth.currentUser) {
+      setIsLogin(true);
     }
-  }, );
+  });
 
   const logoutFB = async () => {
     await signOut(auth);
-    setIsLogin(false)
+    setIsLogin(false);
+    setRefresh((prev) => !prev);
   };
   return (
     <>
@@ -65,10 +66,7 @@ export default function ProfileWindowHeader({
                 <IoMdSettings />
               </div>
 
-              <div
-                onClick={logoutFB}
-                className=" btnStyleOne"
-              >
+              <div onClick={logoutFB} className=" btnStyleOne">
                 <p className="text-white">Log out</p>
                 <BiPowerOff />
               </div>

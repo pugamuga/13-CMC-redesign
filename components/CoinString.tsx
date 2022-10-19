@@ -45,7 +45,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       const newData = { stars: [...star, coin.id] };
       await updateDoc(userDoc, newData);
     }
-    setRefresh(!refresh);
+    setRefresh((prev)=>!prev);
   };
   const deleteDatabaseStar = async () => {
     if (idOfcurrentUser?.id !== null) {
@@ -53,7 +53,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       const newData = { stars: star.filter((i: string) => i !== coin.id) };
       await updateDoc(userDoc, newData);
     }
-    setRefresh(!refresh);
+    setRefresh((prev)=>!prev);
   };
 
   return (

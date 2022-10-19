@@ -12,7 +12,7 @@ import {
   User,
 } from "firebase/auth";
 import { auth, db } from "../firebase/clientApp";
-import { loginState, userState } from "../recoilState/recoilState";
+import { loginState, refreshState, userState } from "../recoilState/recoilState";
 import { RecoilState, useRecoilState } from "recoil";
 import { addDoc, collection } from "firebase/firestore";
 
@@ -31,6 +31,8 @@ export default function LoginHeader(): JSX.Element {
   >(null);
 
   const userCollectionRef = collection(db, "users")
+  const [refresh, setRefresh] = useRecoilState(refreshState);
+
 
 
   useEffect(() => {
@@ -60,6 +62,7 @@ export default function LoginHeader(): JSX.Element {
     } catch (error: any) {
       setinputError("user already exist");
     }
+    setRefresh((prev) => !prev);
     
   };
 
@@ -82,6 +85,7 @@ export default function LoginHeader(): JSX.Element {
     } catch (error: any) {
       setinputError("password or email wrong");
     }
+    setRefresh((prev) => !prev);
   };
 
   return (

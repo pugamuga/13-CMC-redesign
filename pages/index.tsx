@@ -40,7 +40,8 @@ const Home = ({ data }: IProps): JSX.Element => {
   // console.log(idOfcurrentUser);
 useEffect(() => {
   setStar(idOfcurrentUser?.stars)
-},[]);
+  // console.log(idOfcurrentUser?.stars)
+},[refresh]);
  
 
   useEffect(() => {
@@ -64,7 +65,7 @@ useEffect(() => {
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getUsers();
-  }, []);
+  }, [refresh]);
 
   // useEffect(() => {
   //   const updateStarsForUser = async (id: string, stars: string[]) => {
