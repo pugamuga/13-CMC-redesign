@@ -63,10 +63,8 @@ export default function SearchHeader({
             <div className=" bg-white/10 text-white rounded-lg p-2 space-y-2  max-h-[250px] md:max-h-[400px] overflow-y-scroll scrollbar-hide mt-2">
               {resultArray
                 .map((coin: MainCoinData) => {
-                  return <div onClick={() => {
-                    setShowInputHeader(false)
-                  }}>
-                    <CoinStringSlider key={coin.id} coin={coin} />
+                  return <div >
+                    <CoinStringSlider key={coin.id} coin={coin} setShowInputHeader={setShowInputHeader}/>
                   </div>
                 })}
               {resultArray.length === 0 && (
