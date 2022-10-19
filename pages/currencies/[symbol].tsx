@@ -1,13 +1,20 @@
 import axios from "axios";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import moment from "moment";
 import { GetStaticPropsContext } from "next";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiFillStar, AiOutlineStar, AiFillCaretDown } from "react-icons/ai";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { useRecoilState } from "recoil";
-import { coinDataState, globalStar } from "../../recoilState/recoilState";
+import { auth, db } from "../../firebase/clientApp";
+import {
+  coinDataState,
+  currentUserId,
+  globalStar,
+  refreshState,
+} from "../../recoilState/recoilState";
 
 const coinGeckoUrl =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true";
@@ -44,6 +51,14 @@ interface IProps {
 export default function CoinPage({ coin }: IProps): JSX.Element {
   const [coins, setCoins] = useRecoilState(coinDataState);
   const [star, setStar] = useRecoilState(globalStar);
+  const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
+  const [refresh, setRefresh] = useRecoilState(refreshState);
+  const [users, setUsers] = useState<any>([]);
+
+
+  useEffect(() => {
+    console.log(idOfcurrentUser?.stars);
+  }, [refresh]);
 
   const coinDataOnPage: MainCoinData | MainCoinData[] = coins.filter(
     (coinName: MainCoinData) => coinName.symbol === coin
@@ -84,6 +99,47 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
     bodyRef.current.scrollTo(0, 0);
   }, []);
 
+  const addToDatabaseStar = async () => {
+    if (idOfcurrentUser) {
+      const userDoc = await doc(db, "users", idOfcurrentUser?.id);
+      const newData = { stars: [...star, coinUse?.id] };
+      await updateDoc(userDoc, newData);
+    }
+    setRefresh((prev) => !prev);
+  };
+  const deleteDatabaseStar = async () => {
+    if (idOfcurrentUser) {
+      const userDoc = await doc(db, "users", idOfcurrentUser?.id);
+      const newData = { stars: star.filter((i: string) => i !== coinUse?.id) };
+      await updateDoc(userDoc, newData);
+    }
+    setRefresh((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (auth.currentUser) {
+      const currentEmail = auth.currentUser.email;
+      const currentObj = users.filter(
+        (user: any) => user.email?.toLowerCase() === currentEmail?.toLowerCase()
+      );
+
+      setIdOfCurrentUser(currentObj[0]);
+      setStar(currentObj[0]?.stars);
+    } else {
+      setIdOfCurrentUser(null);
+    }
+  }, [users, auth.currentUser, refresh]);
+  
+  const userCollectionRef = collection(db, "users");
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getUsers();
+  }, [refresh]);
+
   if (coin) {
     return (
       <div ref={bodyRef} className=" w-full h-full pb-4 ">
@@ -94,7 +150,7 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
           </div>
         </Link>
         <div className=" flex flex-col md:flex-row md:justify-between  md:items-center md:h-[220px] mt-2">
-          <div className=" w-full flex justify-between p-4 border-2 rounded-md border-white/10 mt-2 md:w-[34%] md:h-full md:mt-0">
+          <div className=" w-full flex justify-between p-4 border-2 rounded-md border-white/10 mt-2 md:w-[39%] md:h-full md:mt-0">
             <div className=" w-full h-full md:flex md:flex-col items-center">
               <div className=" flex items-center  w-full justify-between ">
                 <div className=" flex items-center  space-x-2 mr-2">
@@ -107,24 +163,38 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
                     {coinUse?.symbol.toUpperCase()}
                   </div>
                 </div>
-                {star.includes(coinUse?.id) ? (
+              </div>
+              <div className=" w-full justify-between flex items-center  mt-4">
+                <div className="  text-xs md:text-xl grad-150 text-white px-2 py-1 rounded-md text-center w-[80px] md:w-[130px] ">
+                  <p>Rank #{coinUse?.market_cap_rank}</p>
+                </div>
+                {star?.includes(coinUse?.id) ? (
                   <AiFillStar
                     className="text-3xl md:text-[40px] hover:scale-110 tr-300 text-violet-500  cursor-pointer "
-                    onClick={handleDeleteStar}
+                    onClick={() => {
+                      if (idOfcurrentUser) {
+                        deleteDatabaseStar();
+                      } else {
+                        alert("error");
+                      }
+                    }}
                   />
                 ) : (
                   <AiOutlineStar
                     className="text-3xl md:text-[40px] hover:scale-110 tr-300 opacity-50 cursor-pointer"
-                    onClick={handleAddStar}
+                    onClick={() => {
+                      if (idOfcurrentUser) {
+                        addToDatabaseStar();
+                      } else {
+                        alert("error");
+                      }
+                    }}
                   />
                 )}
               </div>
-              <div className=" mt-4 text-xs md:text-xl grad-150 text-white px-2 py-1 rounded-md text-center w-[80px] md:w-[140px] ">
-                Rank #{coinUse?.market_cap_rank}
-              </div>
             </div>
           </div>
-          <div className="p-4 border-2 rounded-md border-white/10 w-full flex mt-4 md:w-[65%] md:h-full md:mt-0">
+          <div className="p-4 border-2 rounded-md border-white/10 w-full flex mt-4 md:w-[60%] md:h-full md:mt-0">
             <div className=" flex flex-col space-y-2 w-full" id="price">
               <p className=" text-xs text-white/40">
                 {coinUse?.name} Price ({coinUse?.symbol.toUpperCase()})
@@ -258,17 +328,21 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
           <div className=" w-full h-1/2 divide-x-[2px] divide-white/10 flex">
             <div className="h-full w-1/2 flex justify-center flex-col items-center ">
               <p className=" text-sm text-white/50">Market Cap</p>
-              {coinUse?.market_cap?<p className=" pt-2 text-sm md:text-xl">
-                ${coinUse.market_cap.toLocaleString("en-US")}
-              </p>:( 
+              {coinUse?.market_cap ? (
+                <p className=" pt-2 text-sm md:text-xl">
+                  ${coinUse.market_cap.toLocaleString("en-US")}
+                </p>
+              ) : (
                 <p className=" text-md text-white/50">No data</p>
               )}
             </div>
             <div className="h-full w-1/2 flex justify-center flex-col items-center ">
               <p className=" text-sm text-white/50">Volume 24h</p>
-              {coinUse?.total_volume?<p className="  pt-2 text-sm md:text-xl">
-                ${coinUse.total_volume.toLocaleString("en-US")}
-              </p>:( 
+              {coinUse?.total_volume ? (
+                <p className="  pt-2 text-sm md:text-xl">
+                  ${coinUse.total_volume.toLocaleString("en-US")}
+                </p>
+              ) : (
                 <p className=" text-md text-white/50">No data</p>
               )}
             </div>
@@ -276,17 +350,21 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
           <div className=" w-full h-1/2 divide-x-[2px] divide-white/10 flex">
             <div className="h-full w-1/2 flex justify-center flex-col items-center  pt-2">
               <p className=" text-sm text-white/50">Total Supply</p>
-              {coinUse?.total_supply?<p className="  pt-2 text-sm md:text-xl">
-                {coinUse.total_supply.toLocaleString("en-US")}
-              </p>:( 
+              {coinUse?.total_supply ? (
+                <p className="  pt-2 text-sm md:text-xl">
+                  {coinUse.total_supply.toLocaleString("en-US")}
+                </p>
+              ) : (
                 <p className=" text-md text-white/50">No data</p>
               )}
             </div>
             <div className="h-full w-1/2 flex justify-center flex-col items-center pt-2">
               <p className=" text-sm text-white/50">Circulating Supply</p>
-              {coinUse?.circulating_supply?<p className=" pt-2 text-sm md:text-xl">
-                {coinUse.circulating_supply.toLocaleString("en-US")}
-              </p>:( 
+              {coinUse?.circulating_supply ? (
+                <p className=" pt-2 text-sm md:text-xl">
+                  {coinUse.circulating_supply.toLocaleString("en-US")}
+                </p>
+              ) : (
                 <p className=" text-md text-white/50">No data</p>
               )}
             </div>

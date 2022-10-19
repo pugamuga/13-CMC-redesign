@@ -32,8 +32,6 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       ? "#67dfbd"
       : "#ff7171";
 
-  
-
   const addToDatabaseStar = async () => {
     if (idOfcurrentUser?.id !== null) {
       const userDoc = await doc(db, "users", idOfcurrentUser?.id);
@@ -51,8 +49,6 @@ export default function CoinString({ coin }: IProps): JSX.Element {
     setRefresh((prev) => !prev);
   };
 
-  
-
   return (
     <motion.div
       layout
@@ -62,13 +58,16 @@ export default function CoinString({ coin }: IProps): JSX.Element {
       <div className=" absolute top-1/2 left-1 transform  -translate-y-1/2 z-10 cursor-pointer ">
         {star?.includes(coin.id) ? (
           <motion.div
-          initial={{rotate:0}} animate={{rotate:animStar?360:0}} 
-          className="  origin-center">
+            initial={{ rotate: 0 }}
+            animate={{ rotate: animStar ? 0 : 360 }}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
+            className="  origin-center"
+          >
             <AiFillStar
               className="text-xl md:text-[30px] hover:scale-110 tr-300 text-violet-500 md:w-16  cursor-pointer "
               onClick={() => {
                 if (idOfcurrentUser) {
-                  setAnimStar((prev)=>!prev)
+                  setAnimStar((prev) => !prev);
                   deleteDatabaseStar();
                 } else {
                   alert("error");
@@ -78,20 +77,23 @@ export default function CoinString({ coin }: IProps): JSX.Element {
           </motion.div>
         ) : (
           <motion.div
-          initial={{rotate:360}} animate={{rotate:animStar?0:360}} 
-          className=" origin-center">
-          <AiOutlineStar
-            className=" md:w-16 text-xl md:text-[30px] hover:scale-110 tr-300 opacity-50 cursor-pointer"
-            onClick={() => {
-              if (idOfcurrentUser) {
-                setAnimStar((prev)=>!prev)
-                addToDatabaseStar();
-              } else {
-                alert("error");
-              }
-            }}
-          />
-        </motion.div>
+            initial={{ rotate: 360 }}
+            animate={{ rotate: !animStar ? 360 : 0 }}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
+            className=" origin-center"
+          >
+            <AiOutlineStar
+              className=" md:w-16 text-xl md:text-[30px] hover:scale-110 tr-300 opacity-50 cursor-pointer"
+              onClick={() => {
+                if (idOfcurrentUser) {
+                  setAnimStar((prev) => !prev);
+                  addToDatabaseStar();
+                } else {
+                  alert("error");
+                }
+              }}
+            />
+          </motion.div>
         )}
       </div>
       {/* ----------------------- */}

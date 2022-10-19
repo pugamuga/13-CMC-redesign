@@ -66,7 +66,7 @@ export default function CoinStringSlider({
         )}
       </div>
       <Link href={`/currencies/${coin.symbol}`}>
-        <>
+        <div className=" w-full flex ">
           <div className=" flex items-center  space-x-2  w-[300px] md:w-[30%] ml-6 md:ml-7">
             <p className=" text-sm text-white/50 truncate w-6">
               {coin.market_cap_rank}
@@ -93,7 +93,7 @@ export default function CoinStringSlider({
               {coin.price_change_percentage_24h.toFixed(2)}%
             </p>
           </div>
-        </>
+        </div>
       </Link>
     </motion.div>
   );
