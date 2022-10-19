@@ -2,9 +2,14 @@ import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { auth } from "../firebase/clientApp";
-import { coinDataState, favoriteCoin, globalStar } from "../recoilState/recoilState";
+import {
+  coinDataState,
+  favoriteCoin,
+  globalStar,
+} from "../recoilState/recoilState";
 import CoinStringSlider from "./CoinStringSlider";
 import LoginHeader from "./LoginHeader";
+import { AnimatePresence } from "framer-motion";
 
 interface Iprops {
   name: string;
@@ -14,7 +19,6 @@ interface Iprops {
 export default function SlideTop({ name, type }: Iprops): JSX.Element {
   const [coins, setCoins] = useRecoilState(coinDataState);
   const [likeCoin, setLikeCoin] = useRecoilState(favoriteCoin);
-
 
   const coinsForFilter = [...coins];
   const coinsForFilterNew = [...coins];
@@ -45,26 +49,30 @@ export default function SlideTop({ name, type }: Iprops): JSX.Element {
       {type === "like" && (
         <>
           <div className=" w-full h-full flex flex-col justify-between px-2 pt-2 md:hidden pb-8">
-            {coinGainers.slice(0, 3).map((coin: MainCoinData) => {
-              return (
-                <CoinStringSlider
-                  key={coin.id}
-                  likeCoin={likeCoin}
-                  coin={coin}
-                />
-              );
-            })}
+            <AnimatePresence>
+              {coinGainers.slice(0, 3).map((coin: MainCoinData) => {
+                return (
+                  <CoinStringSlider
+                    key={coin.id}
+                    likeCoin={likeCoin}
+                    coin={coin}
+                  />
+                );
+              })}
+            </AnimatePresence>
           </div>
           <div className="hidden md:flex w-full h-full flex-col justify-between  pt-2 md:pb-10 pb-8">
-            {coinGainers.slice(0, 5).map((coin: MainCoinData) => {
-              return (
-                <CoinStringSlider
-                  key={coin.id}
-                  likeCoin={likeCoin}
-                  coin={coin}
-                />
-              );
-            })}
+            <AnimatePresence>
+              {coinGainers.slice(0, 5).map((coin: MainCoinData) => {
+                return (
+                  <CoinStringSlider
+                    key={coin.id}
+                    likeCoin={likeCoin}
+                    coin={coin}
+                  />
+                );
+              })}
+            </AnimatePresence>
           </div>
         </>
       )}
@@ -100,7 +108,11 @@ export default function SlideTop({ name, type }: Iprops): JSX.Element {
       {/* ------------Favorites--------------- */}
       {type === "favorite" && (
         <>
-          <FavResult user={!!auth.currentUser} coins={coins} likeCoin={likeCoin} />
+          <FavResult
+            user={!!auth.currentUser}
+            coins={coins}
+            likeCoin={likeCoin}
+          />
         </>
       )}
       {/* ------------Favorites--------------- */}
@@ -136,13 +148,13 @@ interface FavProps {
   likeCoin: boolean;
 }
 function FavResult({ user, coins, likeCoin }: FavProps): JSX.Element {
-
   const [star, setStar] = useRecoilState(globalStar);
 
-  const copyOfCoins = [...coins]
+  const copyOfCoins = [...coins];
 
-
-  const filteredStarArray = copyOfCoins.filter((coin:MainCoinData)=>star?.includes(coin.id))
+  const filteredStarArray = copyOfCoins.filter((coin: MainCoinData) =>
+    star?.includes(coin.id)
+  );
 
   // console.log(filteredStarArray)
 
@@ -150,18 +162,51 @@ function FavResult({ user, coins, likeCoin }: FavProps): JSX.Element {
     return (
       <>
         <div className=" w-full h-full flex flex-col justify-start space-y-[8px] px-2 pt-2 md:hidden pb-8">
-          {filteredStarArray.slice(0, 3).map((coin: MainCoinData) => {
-            return (
-              <CoinStringSlider key={coin.id} likeCoin={likeCoin} coin={coin} />
-            );
-          })}
+          {filteredStarArray.length !== 0 ? (
+            <AnimatePresence>
+              {filteredStarArray.slice(0, 3).map((coin: MainCoinData) => {
+                return (
+                  <CoinStringSlider
+                    key={coin.id}
+                    likeCoin={likeCoin}
+                    coin={coin}
+                  />
+                );
+              })}
+            </AnimatePresence>
+          ) : (
+            <div className=" w-full h-full superflex relative">
+              <div className=" absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex">
+                <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
+                <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
+                <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
+              </div>
+              <div className="z-10 text-white/70 text-xl">Add some coins </div>
+            </div>
+          )}
         </div>
         <div className="hidden md:flex w-full h-full flex-col justify-start space-y-[6.5px]  pt-2 md:pb-10 pb-8 ">
-          {filteredStarArray.slice(0, 5).map((coin: MainCoinData) => {
-            return (
-              <CoinStringSlider key={coin.id} likeCoin={likeCoin} coin={coin} />
-            );
-          })}
+          
+            {filteredStarArray.length !== 0 ? (<AnimatePresence>{
+              filteredStarArray.slice(0, 5).map((coin: MainCoinData) => {
+                return (
+                  <CoinStringSlider
+                    key={coin.id}
+                    likeCoin={likeCoin}
+                    coin={coin}
+                  />
+                );
+              })}  </AnimatePresence>
+            ) : (
+              <div className=" w-full h-full superflex relative">
+                <div className=" absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex">
+                  <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
+                  <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
+                  <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
+                </div>
+                <div className="z-10 text-white/70 text-xl">Add coins </div>
+              </div>
+            )}
         </div>
       </>
     );
