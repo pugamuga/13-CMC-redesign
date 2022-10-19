@@ -8,7 +8,11 @@ import { useEffect, useState } from "react";
 import LoginHeader from "./LoginHeader";
 import { auth } from "../firebase/clientApp";
 import { signOut } from "firebase/auth";
-import { loginState, refreshState } from "../recoilState/recoilState";
+import {
+  globalStar,
+  loginState,
+  refreshState,
+} from "../recoilState/recoilState";
 
 interface IProps {
   openMenu: boolean;
@@ -21,6 +25,7 @@ export default function ProfileWindowHeader({
 }: IProps): JSX.Element {
   const [isLogin, setIsLogin] = useRecoilState<boolean>(loginState);
   const [refresh, setRefresh] = useRecoilState(refreshState);
+  const [star, setStar] = useRecoilState(globalStar);
 
   useEffect(() => {
     if (auth.currentUser) {

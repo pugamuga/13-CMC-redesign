@@ -2,7 +2,7 @@ import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { auth } from "../firebase/clientApp";
-import { coinDataState, favoriteCoin } from "../recoilState/recoilState";
+import { coinDataState, favoriteCoin, globalStar } from "../recoilState/recoilState";
 import CoinStringSlider from "./CoinStringSlider";
 import LoginHeader from "./LoginHeader";
 
@@ -14,6 +14,7 @@ interface Iprops {
 export default function SlideTop({ name, type }: Iprops): JSX.Element {
   const [coins, setCoins] = useRecoilState(coinDataState);
   const [likeCoin, setLikeCoin] = useRecoilState(favoriteCoin);
+
 
   const coinsForFilter = [...coins];
   const coinsForFilterNew = [...coins];
@@ -135,6 +136,10 @@ interface FavProps {
   likeCoin: boolean;
 }
 function FavResult({ user, coins, likeCoin }: FavProps): JSX.Element {
+
+  const [star, setStar] = useRecoilState(globalStar);
+
+
   if (user) {
     return (
       <>

@@ -37,27 +37,28 @@ const Home = ({ data }: IProps): JSX.Element => {
   const [users, setUsers] = useState<any>([]);
   const userCollectionRef = collection(db, "users");
 
-  // console.log(idOfcurrentUser);
-useEffect(() => {
-  setStar(idOfcurrentUser?.stars)
-  // console.log(idOfcurrentUser?.stars)
-},[refresh]);
- 
+  useEffect(() => {
+    if (auth.currentUser) {
+      setStar(idOfcurrentUser?.stars);
+    } else {
+      setStar(undefined);
+    }
+    // console.log(idOfcurrentUser?.stars)
+  }, [refresh]);
 
   useEffect(() => {
     if (auth.currentUser) {
-    const currentEmail = auth.currentUser.email;
+      const currentEmail = auth.currentUser.email;
       const currentObj = users.filter(
         (user: any) => user.email?.toLowerCase() === currentEmail?.toLowerCase()
       );
-      
+
       setIdOfCurrentUser(currentObj[0]);
-      setStar(currentObj[0]?.stars)
-      
+      setStar(currentObj[0]?.stars);
     } else {
       setIdOfCurrentUser(null);
     }
-  }, [users, auth.currentUser,refresh]);
+  }, [users, auth.currentUser, refresh]);
 
   useEffect(() => {
     const getUsers = async () => {
