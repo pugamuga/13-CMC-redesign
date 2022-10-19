@@ -1,5 +1,13 @@
+import { doc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { useRecoilState } from "recoil";
+import { db } from "../firebase/clientApp";
+import {
+  currentUserId,
+  globalStar,
+  refreshState,
+} from "../recoilState/recoilState";
 
 interface IProps {
   likeCoin?: boolean;
@@ -10,13 +18,34 @@ export default function CoinStringSlider({
   likeCoin,
   coin,
 }: IProps): JSX.Element {
+  const [star, setStar] = useRecoilState(globalStar);
+  const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
+  const [refresh, setRefresh] = useRecoilState(refreshState);
+
+  const addToDatabaseStar = async () => {
+    if (idOfcurrentUser?.id !== null) {
+      const userDoc = await doc(db, "users", idOfcurrentUser.id);
+      const newData = { stars: [...star, coin.id] };
+      await updateDoc(userDoc, newData);
+    }
+    setRefresh((prev) => !prev);
+  };
+  const deleteDatabaseStar = async () => {
+    if (idOfcurrentUser?.id !== null) {
+      const userDoc = await doc(db, "users", idOfcurrentUser.id);
+      const newData = { stars: star.filter((i: string) => i !== coin.id) };
+      await updateDoc(userDoc, newData);
+    }
+    setRefresh((prev) => !prev);
+  };
+
   return (
-    <div className="w-full items-center flex relative justify-between py-2 grad-150 px-2 cursor-pointer rounded-lg hover:scale-x-[102%] tr-300 border-[1px] border-white/0 hover:border-white/30">
+    <div className="w-full overflow-x-scroll scrollbar-hide items-center flex relative justify-between py-2 grad-150 px-2 cursor-pointer rounded-lg hover:scale-x-[102%] tr-300 border-[1px] border-white/0 hover:border-white/30">
       <div className=" absolute top-1/2 bottom-0 -translate-y-1/2">
-        {likeCoin ? (
-          <AiFillStar className="text-md mt-[1px] md:mt-0   md:text-[20px] hover:scale-110 tr-300 text-violet-500  " />
+        {star?.includes(coin.id) ? (
+          <AiFillStar className="text-md mt-[1px] md:mt-0   md:text-[20px] hover:scale-110 tr-300 text-violet-500  " onClick={deleteDatabaseStar}/>
         ) : (
-          <AiOutlineStar className="  text-md  mt-[1px] md:mt-0  md:text-[20px] hover:scale-110 tr-300 opacity-50" />
+          <AiOutlineStar className="  text-md  mt-[1px] md:mt-0  md:text-[20px] hover:scale-110 tr-300 opacity-50" onClick={addToDatabaseStar}/>
         )}
       </div>
       <Link href={`/currencies/${coin.symbol}`}>

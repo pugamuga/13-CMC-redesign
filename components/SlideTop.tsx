@@ -139,19 +139,25 @@ function FavResult({ user, coins, likeCoin }: FavProps): JSX.Element {
 
   const [star, setStar] = useRecoilState(globalStar);
 
+  const copyOfCoins = [...coins]
+
+
+  const filteredStarArray = copyOfCoins.filter((coin:MainCoinData)=>star?.includes(coin.id))
+
+  // console.log(filteredStarArray)
 
   if (user) {
     return (
       <>
-        <div className=" w-full h-full flex flex-col justify-between px-2 pt-2 md:hidden pb-8">
-          {coins.slice(0, 3).map((coin: MainCoinData) => {
+        <div className=" w-full h-full flex flex-col justify-start space-y-[8px] px-2 pt-2 md:hidden pb-8">
+          {filteredStarArray.slice(0, 3).map((coin: MainCoinData) => {
             return (
               <CoinStringSlider key={coin.id} likeCoin={likeCoin} coin={coin} />
             );
           })}
         </div>
-        <div className="hidden md:flex w-full h-full flex-col justify-between  pt-2 md:pb-10 pb-8">
-          {coins.slice(0, 5).map((coin: MainCoinData) => {
+        <div className="hidden md:flex w-full h-full flex-col justify-start space-y-[6.5px]  pt-2 md:pb-10 pb-8 ">
+          {filteredStarArray.slice(0, 5).map((coin: MainCoinData) => {
             return (
               <CoinStringSlider key={coin.id} likeCoin={likeCoin} coin={coin} />
             );
