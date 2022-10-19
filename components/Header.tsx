@@ -6,15 +6,18 @@ import { IoAdd } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import SearchHeader from "./SearchHeader";
 import { useRecoilState } from "recoil";
-import { burgerMenuState } from "../recoilState/recoilState";
+import { burgerMenuState, loginStateMain } from "../recoilState/recoilState";
 import ProfileWindowHeader from "./ProfileWindowHeader";
 import ToggleDarkMode from "./ToggleDarkMode";
 import MobileSideBar from "./MobileSideBar";
 import Link from "next/link";
+import LoginMainWindow from "./LoginMainWindow";
 
 export default function Header(): JSX.Element {
   const [showInputHeader, setShowInputHeader] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useRecoilState(burgerMenuState);
+  const [show, setShow] = useRecoilState(loginStateMain);
+
 
   return (
     <div className=" w-screen h-[60px]   md:px-4 md:pr-12 flex items-center px-4 justify-between">
@@ -26,6 +29,9 @@ export default function Header(): JSX.Element {
           />
         )}
       </AnimatePresence>
+      {/* -------------------------------- */}
+      <AnimatePresence>{show && <LoginMainWindow setShowInputHeader={setShowInputHeader}/>}</AnimatePresence>
+      {/* -------------------------------- */}
 
       <div className=" flex items-center space-x-2  select-none cursor-pointer">
         <Link href={"/"}>

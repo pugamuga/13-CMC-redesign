@@ -13,6 +13,7 @@ import {
   coinDataState,
   currentUserId,
   globalStar,
+  loginStateMain,
   refreshState,
 } from "../../recoilState/recoilState";
 
@@ -54,6 +55,8 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
   const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
   const [refresh, setRefresh] = useRecoilState(refreshState);
   const [users, setUsers] = useState<any>([]);
+  const [show, setShow] = useRecoilState(loginStateMain);
+
 
 
   useEffect(() => {
@@ -175,7 +178,7 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
                       if (idOfcurrentUser) {
                         deleteDatabaseStar();
                       } else {
-                        alert("error");
+                        setShow(true);
                       }
                     }}
                   />
@@ -186,7 +189,7 @@ export default function CoinPage({ coin }: IProps): JSX.Element {
                       if (idOfcurrentUser) {
                         addToDatabaseStar();
                       } else {
-                        alert("error");
+                        setShow(true);
                       }
                     }}
                   />

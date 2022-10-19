@@ -62,3 +62,9 @@ export const refreshState = atom<boolean>({
   key: "refreshState",
   default: false,
 });
+
+
+export const loginStateMain = atom<boolean>({
+  key: "loginStateMain",
+  default: false,
+});

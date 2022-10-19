@@ -6,6 +6,7 @@ import { db } from "../firebase/clientApp";
 import {
   currentUserId,
   globalStar,
+  loginStateMain,
   refreshState,
 } from "../recoilState/recoilState";
 import { motion } from "framer-motion";
@@ -25,6 +26,8 @@ export default function CoinStringSlider({
   const [star, setStar] = useRecoilState(globalStar);
   const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
   const [refresh, setRefresh] = useRecoilState(refreshState);
+  const [show, setShow] = useRecoilState(loginStateMain);
+
 
   const addToDatabaseStar = async () => {
     if (idOfcurrentUser?.id !== null) {
@@ -58,7 +61,7 @@ export default function CoinStringSlider({
               if (idOfcurrentUser) {
                 deleteDatabaseStar();
               } else {
-                alert("error");
+                setShow(true);
               }
             }}
           />
@@ -69,7 +72,7 @@ export default function CoinStringSlider({
               if (idOfcurrentUser) {
                 addToDatabaseStar();
               } else {
-                alert("error");
+                setShow(true);
               }
             }}
           />

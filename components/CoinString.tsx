@@ -8,6 +8,7 @@ import {
   currentUserId,
   favoriteCoin,
   globalStar,
+  loginStateMain,
   refreshState,
 } from "../recoilState/recoilState";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
@@ -23,6 +24,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
   const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
   const [refresh, setRefresh] = useRecoilState(refreshState);
   const [animStar, setAnimStar] = useState(false);
+  const [show, setShow] = useRecoilState(loginStateMain);
 
   // console.log(star)
 
@@ -70,7 +72,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
                   setAnimStar((prev) => !prev);
                   deleteDatabaseStar();
                 } else {
-                  alert("error");
+                  setShow(true);
                 }
               }}
             />
@@ -89,7 +91,7 @@ export default function CoinString({ coin }: IProps): JSX.Element {
                   setAnimStar((prev) => !prev);
                   addToDatabaseStar();
                 } else {
-                  alert("error");
+                  setShow(true);
                 }
               }}
             />
