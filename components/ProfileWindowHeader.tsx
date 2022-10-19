@@ -27,6 +27,22 @@ export default function ProfileWindowHeader({
   const [refresh, setRefresh] = useRecoilState(refreshState);
   const [star, setStar] = useRecoilState(globalStar);
 
+  const [btnSettings, setBtnSettings] = useState(false);
+  const [btnAccount, setBtnAccount] = useState(false);
+
+  useEffect(() => {
+    if (btnSettings) {
+      setTimeout(() => {
+        setBtnSettings(false);
+      }, 1500);
+    }
+    if (btnAccount) {
+      setTimeout(() => {
+        setBtnAccount(false);
+      }, 1500);
+    }
+  }, [btnSettings, btnAccount]);
+
   useEffect(() => {
     if (auth.currentUser) {
       setIsLogin(true);
@@ -62,12 +78,26 @@ export default function ProfileWindowHeader({
                 </div>
                 <p className="truncate w-44">{auth?.currentUser?.email}</p>
               </div>
-              <div className=" btnStyleOne">
-                <p className="text-white">Account</p>
+              <div
+                className=" btnStyleOne"
+                onClick={() => {
+                  setBtnAccount((prev) => !prev);
+                }}
+              >
+                <p className="text-white">
+                  {btnAccount ? "Page does not exist yet 😞" : "Account"}
+                </p>
                 <MdAccountCircle />
               </div>
-              <div className=" btnStyleOne ">
-                <p className=" text-white">Settings</p>
+              <div
+                className=" btnStyleOne "
+                onClick={() => {
+                  setBtnSettings((prev) => !prev);
+                }}
+              >
+                <p className=" text-white">
+                  {btnSettings ? "Page does not exist yet 😞" : "Settings"}
+                </p>
                 <IoMdSettings />
               </div>
 
