@@ -48,9 +48,21 @@ export default function CoinStringSlider({
     className="w-full overflow-x-scroll scrollbar-hide items-center flex relative justify-between py-2 grad-150 px-2 cursor-pointer rounded-lg hover:scale-x-[102%] tr-300 border-[1px] border-white/0 hover:border-white/30">
       <div className=" absolute top-1/2 bottom-0 -translate-y-1/2">
         {star?.includes(coin.id) ? (
-          <AiFillStar className="text-md mt-[1px] md:mt-0   md:text-[20px] hover:scale-110 tr-300 text-violet-500  " onClick={deleteDatabaseStar}/>
+          <AiFillStar className="text-md mt-[1px] md:mt-0   md:text-[20px] hover:scale-110 tr-300 text-violet-500  " onClick={() => {
+            if (idOfcurrentUser) {
+              deleteDatabaseStar();
+            } else {
+              alert("error");
+            }
+          }}/>
         ) : (
-          <AiOutlineStar className="  text-md  mt-[1px] md:mt-0  md:text-[20px] hover:scale-110 tr-300 opacity-50" onClick={addToDatabaseStar}/>
+          <AiOutlineStar className="  text-md  mt-[1px] md:mt-0  md:text-[20px] hover:scale-110 tr-300 opacity-50" onClick={() => {
+            if (idOfcurrentUser) {
+              addToDatabaseStar();
+            } else {
+              alert("error");
+            }
+          }}/>
         )}
       </div>
       <Link href={`/currencies/${coin.symbol}`}>
