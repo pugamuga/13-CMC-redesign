@@ -48,7 +48,6 @@ export default function CoinStringSlider({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      layout
       className="w-full overflow-x-scroll scrollbar-hide items-center flex relative justify-between py-2 grad-150 px-2 cursor-pointer rounded-lg hover:scale-x-[102%] tr-300 border-[1px] border-white/0 hover:border-white/30"
     >
       <div className=" absolute top-1/2  -translate-y-1/2">

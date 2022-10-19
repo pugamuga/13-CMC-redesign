@@ -1,15 +1,18 @@
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useRecoilState } from "recoil";
-import { auth } from "../firebase/clientApp";
+import { auth, db } from "../firebase/clientApp";
 import {
   coinDataState,
+  currentUserId,
   favoriteCoin,
   globalStar,
+  refreshState,
 } from "../recoilState/recoilState";
 import CoinStringSlider from "./CoinStringSlider";
 import LoginHeader from "./LoginHeader";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { doc, updateDoc } from "firebase/firestore";
 
 interface Iprops {
   name: string;
@@ -19,6 +22,9 @@ interface Iprops {
 export default function SlideTop({ name, type }: Iprops): JSX.Element {
   const [coins, setCoins] = useRecoilState(coinDataState);
   const [likeCoin, setLikeCoin] = useRecoilState(favoriteCoin);
+  const [idOfcurrentUser, setIdOfCurrentUser] = useRecoilState(currentUserId);
+  const [refresh, setRefresh] = useRecoilState(refreshState);
+  const [star, setStar] = useRecoilState(globalStar);
 
   const coinsForFilter = [...coins];
   const coinsForFilterNew = [...coins];
@@ -35,15 +41,39 @@ export default function SlideTop({ name, type }: Iprops): JSX.Element {
     }
   );
 
+  const deleteAllDatabaseStar = async () => {
+    if (idOfcurrentUser) {
+      const userDoc = await doc(db, "users", idOfcurrentUser.id);
+      const newData = { stars: [] };
+      await updateDoc(userDoc, newData);
+    }
+    setRefresh((prev) => !prev);
+  };
+
   return (
     <div className=" h-full w-full grad-150 rounded-lg p-2">
-      <div className=" flex items-center justify-start w-full border-b pb-2 border-white/10">
-        <div className="md:text-3xl px-2 text-xl">
-          {type === "like" && <Like />}
-          {type === "dislike" && <DisLike />}
-          {type === "favorite" && <Favorite />}
+      <div className=" flex items-center justify-between w-full border-b pb-2 border-white/10">
+        <div className=" flex items-center">
+          <div className="md:text-3xl px-2 text-xl">
+            {type === "like" && <Like />}
+            {type === "dislike" && <DisLike />}
+            {type === "favorite" && <Favorite />}
+          </div>
+          <p className="font-bold text-sm md:text-lg">{name}</p>
         </div>
-        <p className="font-bold text-sm md:text-lg">{name}</p>
+        <AnimatePresence>
+          {type === "favorite" && idOfcurrentUser?.stars.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className=" bg-[#ff7171] bg-opacity-20 px-2 mr-2 rounded-md tr-300 hover:bg-opacity-100 cursor-pointer"
+              onClick={deleteAllDatabaseStar}
+            >
+              Delete all
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       {/* ------------Gainers--------------- */}
       {type === "like" && (
@@ -186,9 +216,9 @@ function FavResult({ user, coins, likeCoin }: FavProps): JSX.Element {
           )}
         </div>
         <div className="hidden md:flex w-full h-full flex-col justify-start space-y-[6.5px]  pt-2 md:pb-10 pb-8 ">
-          
-            {filteredStarArray.length !== 0 ? (<AnimatePresence>{
-              filteredStarArray.slice(0, 5).map((coin: MainCoinData) => {
+          {filteredStarArray.length !== 0 ? (
+            <AnimatePresence>
+              {filteredStarArray.slice(0, 5).map((coin: MainCoinData) => {
                 return (
                   <CoinStringSlider
                     key={coin.id}
@@ -196,17 +226,18 @@ function FavResult({ user, coins, likeCoin }: FavProps): JSX.Element {
                     coin={coin}
                   />
                 );
-              })}  </AnimatePresence>
-            ) : (
-              <div className=" w-full h-full superflex relative">
-                <div className=" absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex">
-                  <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
-                  <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
-                  <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
-                </div>
-                <div className="z-10 text-white/70 text-xl">Add coins </div>
+              })}{" "}
+            </AnimatePresence>
+          ) : (
+            <div className=" w-full h-full superflex relative">
+              <div className=" absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex">
+                <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
+                <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
+                <AiFillStar className=" text-violet-600/20 text-[80px] z-0" />
               </div>
-            )}
+              <div className="z-10 text-white/70 text-xl">Add coins </div>
+            </div>
+          )}
         </div>
       </>
     );
